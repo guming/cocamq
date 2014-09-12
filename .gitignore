@@ -20,3 +20,4 @@ gradle/*
 target/*
 cocamq.ipr
 cocamq.iws
+build/*
