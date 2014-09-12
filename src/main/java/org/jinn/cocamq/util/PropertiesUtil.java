@@ -64,4 +64,8 @@ public class PropertiesUtil {
 		}
 		return in;
 	}
+
+    public static void main(String[] args) {
+        System.out.println(PropertiesUtil.getValue("broker.id"));
+    }
 }

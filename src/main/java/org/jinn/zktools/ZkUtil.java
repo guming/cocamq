@@ -86,7 +86,7 @@ public class ZkUtil {
 		return in;
 	}
 	public static void main(String[] args) {
-		String host="10.1.7.171";
+		String host="127.0.0.1";
 		int port=15001;
 		String temp="cocamq://" + host + ":" + port;
 		if(temp.startsWith("cocamq://")){
@@ -95,5 +95,7 @@ public class ZkUtil {
 			System.out.println(str[0]);
 			System.out.println(str[1]);
 		}
-	}
+        ZkConfig zc=ZkUtil.loadZkConfig();
+        System.out.println(zc.getZkConnect());
+    }
 }

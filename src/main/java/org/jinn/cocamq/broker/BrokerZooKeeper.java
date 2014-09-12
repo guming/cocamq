@@ -31,7 +31,7 @@ public class BrokerZooKeeper implements PropertyChangeListener{
 		// TODO Auto-generated constructor stub
 		zkconfig=ZkUtil.loadZkConfig();
 		zkh=new ZkHandler(zkconfig);
-		zkh.createPersistentPath(root, "jinnmq");
+		zkh.createPersistentPath(root, "cocamq");
         this.metaRoot = this.normalize(root);
         this.brokerPath = this.metaRoot + "/brokers";
         this.brokerTopicPath = this.metaRoot + "/brokers/topics";

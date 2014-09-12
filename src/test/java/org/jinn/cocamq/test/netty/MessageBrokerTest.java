@@ -11,10 +11,6 @@ public class MessageBrokerTest {
 		MessageStorage ms=new MsgFileStorage("comment");
 		MessageBroker mb = new MessageBroker(ms);
 		mb.start();
-		try {
-			Thread.sleep(1000*60*10);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+
 	}
 }

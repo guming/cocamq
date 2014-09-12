@@ -37,7 +37,7 @@ public class MessageProducerTest {
 		Stopwatch stopwatch = new Stopwatch();
 		stopwatch.start();
 		 try {
-             for (int i = 0; i < 1000000; i++) {
+             for (int i = 0; i < 40000; i++) {
                      mp.sendMessage(getMessage(i));
 		       }
 		      } catch (Exception e) {
