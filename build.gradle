@@ -40,7 +40,7 @@ sourceSets {
 }
 
 task(runMsgServer, dependsOn: 'classes', type: JavaExec) {
-    main = 'com.xionglie.tcserver.Main'
+    main = 'org.jinn.cocamq.broker.StartServer'
     classpath = sourceSets.main.runtimeClasspath
 }
 
