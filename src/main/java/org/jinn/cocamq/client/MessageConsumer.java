@@ -15,10 +15,11 @@ import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelHandler;
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
+import org.jboss.netty.handler.codec.frame.FixedLengthFrameDecoder;
 import org.jinn.cocamq.commons.ClientConfig;
 import org.jinn.cocamq.commons.MessagePack;
 import org.jinn.cocamq.command.GetCommand;
-import org.jinn.cocamq.entity.MessageJson;
+import org.jinn.cocamq.client.entity.MessageJson;
 import org.jinn.cocamq.util.PropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,17 +47,21 @@ public class MessageConsumer {
 	
 	public Channel channel;
 
+    public MessageProcessor messageProcessor;
+
+
 	private class ClientHandler extends SimpleChannelHandler {
 		@Override
 		public void messageReceived(final ChannelHandlerContext ctx,
 				final MessageEvent e) throws Exception {
-			
+//            cz.updateFetchOffset(topic, 0);
 			ChannelBuffer temp=(ChannelBuffer)e.getMessage();
-			List<MessageJson> listMsg=MessagePack.unpackMessages(temp.array(), cc.getOffset(), cc);
-			cz.updateFetchOffset(topic,cc.getOffset());
-			logger.info("cc getOffset:"+cc.getOffset());
-			MessageProcessor.getInstance().processMessages(listMsg);//process logic
-//			e.getChannel().close();
+            ChannelBuffer t=temp.copy();
+            System.out.println("message received size:"+temp.array().length);
+            List<MessageJson> listMsg = MessagePack.unpackMessages(t.array(), cc.getOffset(), cc);
+            cz.updateFetchOffset(topic, cc.getOffset());
+            logger.info("cc getOffset:" + cc.getOffset());
+            messageProcessor.processMessages(listMsg);//process logic
 		}
 	}
 	public MessageConsumer() {
@@ -67,6 +72,11 @@ public class MessageConsumer {
 		this.topic=topic;
 		// TODO Auto-generated constructor stub
 	}
+    public MessageConsumer(String topic,MessageProcessor mp) {
+        this.topic=topic;
+        this.messageProcessor = mp;
+        // TODO Auto-generated constructor stub
+    }
 	public void start() {
 		cz=new ConsumerZookeeper("/root");
 		cz.start(topic);
@@ -81,9 +91,8 @@ public class MessageConsumer {
 			e.printStackTrace();
 		}
 		ChannelPipeline pipeline = bootstrap.getPipeline();
-//		pipeline.addLast("decoder", new StringDecoder(CharsetUtil.UTF_8));
-//		pipeline.addLast("encoder", new StringEncoder(CharsetUtil.UTF_8));
-		pipeline.addLast("handler", new ClientHandler());
+        pipeline.addLast("framer", new FixedLengthFrameDecoder(1024*2));
+        pipeline.addLast("handler", new ClientHandler());
 		bootstrap.setOption("child.tcpNoDelay", true);
 		bootstrap.setOption("child.keepAlive", true);
 		ChannelFuture future = bootstrap.connect(new InetSocketAddress(
@@ -93,7 +102,8 @@ public class MessageConsumer {
 	}
 	public void start(ClientConfig cClient) {
 		ChannelPipeline pipeline = bootstrap.getPipeline();
-		pipeline.addLast("handler", new ClientHandler());
+        pipeline.addLast("framer", new FixedLengthFrameDecoder(1024*2));
+        pipeline.addLast("handler", new ClientHandler());
 		bootstrap.setOption("child.tcpNoDelay", true);
 		bootstrap.setOption("child.keepAlive", true);
 		ChannelFuture future = bootstrap.connect(new InetSocketAddress(
@@ -119,7 +129,7 @@ public class MessageConsumer {
 	public static void main(String[] args) {
 		MessageConsumer mp = new MessageConsumer("comment");
 		mp.start();
-		mp.fetchMessage(0,1024);
+		mp.fetchMessage(mp.getCc().getOffset(),1024*2);
 		mp.stop();
 	}
 }

@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.I0Itec.zkclient.IZkChildListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jinn.cocamq.commons.ClientConfig;
 import org.jinn.cocamq.util.PropertiesUtil;
+import org.jinn.zktools.ZkChildListener;
 import org.jinn.zktools.ZkConfig;
 import org.jinn.zktools.ZkHandler;
 import org.jinn.zktools.ZkUtil;
@@ -97,7 +97,7 @@ public class ProductorZookeeper {
 		return cc;
 	}
 	
-	final class BrokerConnectionListener implements IZkChildListener{
+	final class BrokerConnectionListener implements ZkChildListener {
 		
 		final String topic;
 		public BrokerConnectionListener(String topic) {

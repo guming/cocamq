@@ -13,7 +13,7 @@ public class MessageConsumerManager {
 	private final static Logger logger = LoggerFactory
 			.getLogger(MessageConsumerManager.class);
 	
-	private int fetch_length=1024*12;//default 12k
+	private int fetch_length=1024*4;//default 12k
 	private ConsumerZookeeper cz;
 	
 	private List<MessageConsumer> mcList=new ArrayList<MessageConsumer>();

@@ -1,7 +1,6 @@
-package org.jinn.cocamq.entity;
+package org.jinn.cocamq.client.entity;
 
 import java.io.Serializable;
-
 
 public class MessageJson implements Serializable
 {
@@ -22,9 +21,10 @@ public class MessageJson implements Serializable
 
     private Info info=new Info();
 
-    private String DB_key_hash;
+    private String db_key_hash;
 
-
+    public MessageJson() {
+    }
 
     public Info getInfo() {
         return info;
@@ -92,15 +92,15 @@ public class MessageJson implements Serializable
                 ", mars_cid='" + mars_cid + '\'' +
                 ", session_id='" + session_id + '\'' +
                 ", info=" + info +
-                ", DB_key_hash='" + DB_key_hash + '\'' +
+                ", DB_key_hash='" + db_key_hash + '\'' +
                 '}';
     }
 
-    public String getDB_key_hash() {
-        return DB_key_hash;
+    public String getDb_key_hash() {
+        return db_key_hash;
     }
 
-    public void setDB_key_hash(String DB_key_hash) {
-        this.DB_key_hash = DB_key_hash;
+    public void setDb_key_hash(String db_key_hash) {
+        this.db_key_hash = db_key_hash;
     }
 }

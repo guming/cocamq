@@ -1,4 +1,4 @@
-package org.jinn.cocamq.entity;
+package org.jinn.cocamq.client.entity;
 
 /**
  * Created by gumingcn on 14-7-28.

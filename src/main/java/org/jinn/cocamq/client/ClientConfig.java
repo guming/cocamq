@@ -1,6 +1,7 @@
 package org.jinn.cocamq.client;
 
 public class ClientConfig {
+
 	String nodeId="";
 	String nodeValue="";
 	public String getNodeId() {
