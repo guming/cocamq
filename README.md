@@ -13,8 +13,10 @@ cocamq
      StartServer.java
      MessageProducerTest.java
 
-硬件 mac os 5400 SATA硬盘 I5 2.4Ghz 8GB内存
+硬件 
+     mac os 5400 SATA硬盘 I5 2.4Ghz 8GB内存
      windows 7 5400 SATA硬盘 I5 2.6GHz 8GB内存
+     
 写入速度
 
      消息1k   10w循环写   tps 5w/s
