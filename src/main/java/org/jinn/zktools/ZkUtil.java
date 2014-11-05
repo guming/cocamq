@@ -42,7 +42,6 @@ public class ZkUtil {
 
 			return zkConfig;
 		} catch (final IOException e) {
-			// log.error("zk配置失败", e);
 			return null;
 		}
 	}

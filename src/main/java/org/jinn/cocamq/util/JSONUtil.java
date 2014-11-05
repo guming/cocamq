@@ -6,9 +6,6 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by gumingcn on 14-7-25.
- */
 public class JSONUtil {
     private static final ObjectMapper objectMapper =  new ObjectMapper();
 
@@ -41,12 +38,6 @@ public class JSONUtil {
 
     }
 
-    /**
-     * 将java对象转换成json字符串
-     * @param obj 准备转换的对象
-     * @return json字符串
-     * @throws Exception
-     */
     public static String beanToJson(Object obj) throws Exception {
         try {
             String json =objectMapper.writeValueAsString(obj);
@@ -56,18 +47,12 @@ public class JSONUtil {
         }
     }
 
-    /**
-     * 将json字符串转换成java对象
-     * @param json 准备转换的json字符串
-     * @param cls  准备转换的类
-     * @return
-     * @throws Exception
-     */
     public static Object jsonToBean(String json, Class<?> cls) throws Exception {
         try {
             Object vo = objectMapper.readValue(json, cls);
             return vo;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new Exception(e.getMessage());
         }
     }

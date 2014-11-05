@@ -6,12 +6,9 @@ public class ZkConfig implements Serializable {
     static final long serialVersionUID = -1L;
 
     public String zkRoot = "/jinnmq";
-    /**
-     * If enable zookeeper
-     */
+
     public boolean zkEnable = true;
 
-    /** ZK host string */
     public String zkConnect;
 
     /** zookeeper session timeout */
@@ -19,7 +16,6 @@ public class ZkConfig implements Serializable {
 
     /**
      * the max time that the client waits to establish a connection to
-     * zookeeper
      */
     public int zkConnectionTimeoutMs = 30000;
 

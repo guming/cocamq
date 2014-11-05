@@ -2,8 +2,8 @@ package org.jinn.cocamq.entity;
 
 import java.io.Serializable;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+//import com.alibaba.fastjson.JSON;
+//import com.alibaba.fastjson.JSONObject;
 /**
  * reply msg from server
  * @author guming
@@ -41,9 +41,9 @@ public class ResponseMessage implements Serializable{
 			pos = jbody.indexOf("#");
 			size = Integer.valueOf(jbody.substring(0, pos));
 			jbody = jbody.substring(pos + 1);
-			JSONObject jo = (JSONObject) JSON.parse(jbody);
-			status = jo.getInteger("status");
-			message =jo.getString("message");
+//			JSONObject jo = (JSONObject) JSON.parse(jbody);
+//			status = jo.getInteger("status");
+//			message =jo.getString("message");
 		}
 	}
 	public int getStatus()
@@ -68,11 +68,11 @@ public class ResponseMessage implements Serializable{
 
 	public String toString()
 	{
-		JSONObject ret = new JSONObject();
-		ret.put("status", status);
-		ret.put("message", message);
-		String body_value=ret.toString();
-		return cmd + "#"+size+"#" + body_value+"\r\n";
+//		JSONObject ret = new JSONObject();
+//		ret.put("status", status);
+//		ret.put("message", message);
+//		String body_value=ret.toString();
+		return cmd + "#"+size+"#" +"\r\n";//body_value
 	}
 
 	public String getCmd()

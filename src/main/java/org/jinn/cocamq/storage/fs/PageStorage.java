@@ -18,7 +18,7 @@ import org.jinn.cocamq.entity.Message;
  */
 public class PageStorage {
 	private static final Logger logger = Logger.getLogger(PageStorage.class);
-	private static final String BASE_DIR="/Users/gumingcn/dev/mqfile/";
+	private static final String BASE_DIR="D:/gumingcn/mqfile/";
 	PageSegmentSet fsm;
 
 	public PageStorage(String topic) {

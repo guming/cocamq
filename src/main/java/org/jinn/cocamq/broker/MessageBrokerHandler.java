@@ -49,17 +49,14 @@ public class MessageBrokerHandler extends SimpleChannelUpstreamHandler {
 				sendResponse(ctx);
 			}else if(cmd.equals("set")){
                 Message msg=new MessageBytes(rpm.getBody());
-//				MessageQueue.getBqueue().add(msg);
                 msgStorage.appendMessage(msg);
 			}
 			else if(cmd.equals("get")){
-//				ctx.getChannel().write("fetch");
 				SimpleWritableByteChannel swb=new SimpleWritableByteChannel();
 				swb.channel=e.getChannel();
-				msgStorage.fetchMessagesBeforeByTopic(swb, rpm.getOffset(), rpm.getFetch_size(), "comment");
+                msgStorage.fetchMessagesBeforeByTopic(swb, rpm.getOffset(), rpm.getFetch_size(), "comment");
 				// Channels.fireMessageReceived(e.getChannel(),buf);
 			}else{
-				//sendResponse(ctx);
 				logger.warn("do nothing:"+e.getRemoteAddress());
 			}
 		} catch (Exception ex) {

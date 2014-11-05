@@ -12,7 +12,7 @@ import org.jinn.cocamq.commons.ClientConfig;
 import org.jinn.cocamq.commons.MessageException;
 import org.jinn.cocamq.commons.MessagePack;
 import org.jinn.cocamq.entity.Message;
-import org.jinn.cocamq.entity.MessageJson;
+import org.jinn.cocamq.client.entity.MessageJson;
 import org.jinn.cocamq.storage.fs.FileSegment;
 import org.jinn.cocamq.storage.fs.FileSegmentManager;
 

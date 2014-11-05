@@ -15,12 +15,12 @@ public interface FileHandler {
 	    public void read(final WritableByteChannel socketChanel,long start,long end) throws IOException;
 	    
 	    public FileChannel getChannel();
-	    
-	    public boolean checkWrite();
-	    
-	    public long getLimitsize();
-	    
-	    public long getSizeInfile();
-	    
-	    public void close() throws IOException;
+
+    public boolean checkWrite();
+
+    public long getLimitsize();
+
+    public long getSizeInfile();
+
+    public void close() throws IOException;
 }

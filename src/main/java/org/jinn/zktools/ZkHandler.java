@@ -23,14 +23,7 @@ public class ZkHandler implements Closeable{
 	
 	public void createParentPath(final String path){
 		final String parentDir = path.substring(0, path.lastIndexOf('/'));
-//		final String parentDir2 = parentDir.substring(0, parentDir.lastIndexOf('/'));
-//		final String parentDir3 = parentDir.substring(0, parentDir2.lastIndexOf('/'));
 		if(!zkClient.exists(parentDir)){
-//			if(!zkClient.exists(parentDir2)){
-//				if(!zkClient.exists(parentDir3))
-//					zkClient.createPersistent(parentDir3);
-//				zkClient.createPersistent(parentDir2);
-//			}
 			zkClient.createPersistent(parentDir);
 		}
 	}
