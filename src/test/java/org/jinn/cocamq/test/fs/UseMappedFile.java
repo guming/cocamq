@@ -9,11 +9,12 @@ import java.nio.channels.FileChannel;
 public class UseMappedFile {
 	
 	     public static void main( String args[] ) throws Exception { 
-//		     RandomAccessFile raf2 = new RandomAccessFile( "/Users/gumingcn/mqfile/temp2.mq", "rw" );
-		     RandomAccessFile raf = new RandomAccessFile( "/Users/gumingcn/dev/mqfile/temp.mq", "rwd" );
+//		     RandomAccessFile raf2 = new RandomAccessFile( "D:/gumingcn/mqfile/temp2.mq", "rw" );
+		     RandomAccessFile raf = new RandomAccessFile( "D:/gumingcn/mqfile/temp.mq", "rwd" );
 		     FileChannel fc = raf.getChannel();
 //		     FileChannel fc2 = raf2.getChannel(); 
 		     MappedByteBuffer mappedByteBuffer = fc.map(FileChannel.MapMode.READ_WRITE, 0, 1024*1024*100);
+//             fc.transferTo();
 //		     fc.transferTo(0, fc.size(), raf2.getChannel());
 ////		     raf2.write(mappedByteBuffer.array());
 //	//	     mappedByteBuffer.position((int)fc.size());

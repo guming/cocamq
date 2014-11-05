@@ -54,7 +54,7 @@ public class MessageProducerTest {
 	@Test
 	public void testSendMessageThreads(){
 		 for (int j = 0; j < 4; j++) {
-		CommonExcutor.getExec3().execute(
+		CommonExcutor.getExec().execute(
 		new Runnable(){
 			public void run(){
 				logger.info("testSendMessage threads:");
@@ -85,7 +85,7 @@ public class MessageProducerTest {
 	}
 	
 	private Message getMessage(final int i){
-        String temp2="{\"action\":\"edit\",\"redis_key_hash\":\"1\",\"DB_key_hash\":\"\"," +
+        String temp2="{\"action\":\"edit\",\"redis_key_hash\":\"1\",\"db_key_hash\":\"\"," +
                 "\"time\":\"1406168332.35081900\",\"source\":\"web\",\"mars_cid\":\"\"," +
                 "\"session_id\":\"\",\"info\":{\"cart_id\":\"6185\",\"user_id\":\""+i+"\",\"brand_id\":\"7511\"," +
                 "\"num\":2,\"warehouse\":\"as大劫案快解放但就是放得开束ash侃大山" +

@@ -13,7 +13,7 @@ import org.jinn.cocamq.commons.CommonExcutor;
 import org.jinn.cocamq.commons.MessagePack;
 import org.jinn.cocamq.entity.Message;
 import org.jinn.cocamq.entity.MessageBytes;
-import org.jinn.cocamq.entity.MessageJson;
+import org.jinn.cocamq.client.entity.MessageJson;
 import org.jinn.cocamq.storage.MsgFileStorage;
 import org.junit.Test;
 

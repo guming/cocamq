@@ -2,7 +2,7 @@ package org.jinn.cocamq.test.fs;
 
 import org.jinn.cocamq.commons.MemTable;
 import org.jinn.cocamq.commons.MemTableCompaction;
-import org.jinn.cocamq.entity.MessageJson;
+import org.jinn.cocamq.client.entity.MessageJson;
 import org.jinn.cocamq.storage.MsgFileStorage;
 import org.junit.Test;
 
