@@ -1,6 +1,7 @@
-package org.jinn.cocamq.client;
+package org.jinn.cocamq.client.consumer;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
@@ -16,15 +17,15 @@ import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelHandler;
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
 import org.jboss.netty.handler.codec.frame.FixedLengthFrameDecoder;
-import org.jinn.cocamq.commons.ClientConfig;
-import org.jinn.cocamq.commons.MessagePack;
-import org.jinn.cocamq.command.GetCommand;
-import org.jinn.cocamq.client.entity.MessageJson;
+import org.jinn.cocamq.client.producer.MessageProductor;
+import org.jinn.cocamq.client.ClientConfig;
+import org.jinn.cocamq.protocol.message.Message;
+import org.jinn.cocamq.protocol.message.MessagePack;
+import org.jinn.cocamq.protocol.command.GetCommand;
+import org.jinn.cocamq.protocol.message.MessageRecieved;
 import org.jinn.cocamq.util.PropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import sun.nio.ch.DirectBuffer;
 
 public class MessageConsumer {
 	
@@ -37,7 +38,7 @@ public class MessageConsumer {
 	
 	ClientConfig cc=new ClientConfig();
 	
-	DirectBuffer db;
+//	DirectBuffer db;
 	
 	final ChannelFactory factory = new NioClientSocketChannelFactory(
 			Executors.newSingleThreadExecutor(),
@@ -49,6 +50,17 @@ public class MessageConsumer {
 
     public MessageProcessor messageProcessor;
 
+    MessagePack messagePack=new MessagePack() {
+        @Override
+        public void convert(byte[] bytes,List<Message> list) {
+            try {
+                Message msg=new MessageRecieved(bytes);
+                list.add(msg);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
 	private class ClientHandler extends SimpleChannelHandler {
 		@Override
@@ -58,7 +70,8 @@ public class MessageConsumer {
 			ChannelBuffer temp=(ChannelBuffer)e.getMessage();
             ChannelBuffer t=temp.copy();
             System.out.println("message received size:"+temp.array().length);
-            List<MessageJson> listMsg = MessagePack.unpackMessages(t.array(), cc.getOffset(), cc);
+            List<Message> listMsg=new ArrayList<Message>();
+            messagePack.unpackMessages(t.array(), cc.getOffset(), cc, listMsg);
             cz.updateFetchOffset(topic, cc.getOffset());
             logger.info("cc getOffset:" + cc.getOffset());
             messageProcessor.processMessages(listMsg);//process logic
@@ -91,7 +104,7 @@ public class MessageConsumer {
 			e.printStackTrace();
 		}
 		ChannelPipeline pipeline = bootstrap.getPipeline();
-        pipeline.addLast("framer", new FixedLengthFrameDecoder(1024*2));
+        pipeline.addLast("framer", new FixedLengthFrameDecoder(1024*4));
         pipeline.addLast("handler", new ClientHandler());
 		bootstrap.setOption("child.tcpNoDelay", true);
 		bootstrap.setOption("child.keepAlive", true);
@@ -102,7 +115,7 @@ public class MessageConsumer {
 	}
 	public void start(ClientConfig cClient) {
 		ChannelPipeline pipeline = bootstrap.getPipeline();
-        pipeline.addLast("framer", new FixedLengthFrameDecoder(1024*2));
+        pipeline.addLast("framer", new FixedLengthFrameDecoder(1024*4));
         pipeline.addLast("handler", new ClientHandler());
 		bootstrap.setOption("child.tcpNoDelay", true);
 		bootstrap.setOption("child.keepAlive", true);

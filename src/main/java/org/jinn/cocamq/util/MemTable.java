@@ -1,10 +1,10 @@
-package org.jinn.cocamq.commons;
+package org.jinn.cocamq.util;
 
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.jinn.cocamq.entity.Message;
+import org.jinn.cocamq.protocol.message.Message;
 
 
 public class MemTable {
@@ -32,8 +32,8 @@ public class MemTable {
 	}
 	
 	public void append(Message msg){
-		if(mutable.get()==true&&write_buffer_size.addAndGet(msg.getContent().getBytes().length)>limit_size){
-			write_buffer_size.addAndGet(-msg.getContent().getBytes().length);
+		if(mutable.get()==true&&write_buffer_size.addAndGet(msg.getMessage().getBytes().length)>limit_size){
+			write_buffer_size.addAndGet(-msg.getMessage().getBytes().length);
 			mutable.set(false);
 		}
 		if(mutable.get()){

@@ -1,4 +1,4 @@
-package org.jinn.cocamq.client;
+package org.jinn.cocamq.client.consumer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,25 +6,24 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jinn.cocamq.commons.ClientConfig;
+import org.jinn.cocamq.client.ClientConfig;
 import org.jinn.cocamq.util.PropertiesUtil;
 import org.jinn.zktools.ZkChildListener;
 import org.jinn.zktools.ZkConfig;
 import org.jinn.zktools.ZkHandler;
 import org.jinn.zktools.ZkUtil;
 
-
-public class ProductorZookeeper {
-	static final Log log = LogFactory.getLog(ProductorZookeeper.class);
+public class ConsumerZookeeper {
+	
+	static final Log log = LogFactory.getLog(ConsumerZookeeper.class);
 	public final String metaRoot;
-//    public final String productorPath;
-    public final String productorSubjectPath;
+    public final String consumerSubjectPath;
     public final String brokersPath;
 	private ZkConfig zkconfig;
 	private ZkHandler zkh;
 	final List<String> brokers = Collections.synchronizedList(new ArrayList<String>());
 	
-	public ProductorZookeeper(final String root) {
+	public ConsumerZookeeper(final String root) {
 		// TODO Auto-generated constructor stub
 		zkconfig=ZkUtil.loadZkConfig();
 		zkh=new ZkHandler(zkconfig);
@@ -33,47 +32,78 @@ public class ProductorZookeeper {
 		}
 		this.metaRoot = this.normalize(root);
 		this.brokersPath=this.metaRoot + "/brokers/topics";
-//        this.productorPath = this.metaRoot + "/productors";
-        this.productorSubjectPath = this.metaRoot + "/productors/topics";
+        this.consumerSubjectPath = this.metaRoot + "/consumers/topics";
 	}
+	
 	public void start(final String topic){
 		String path=brokersPath+"/"+topic+"/master";
+//		if(log.isDebugEnabled())
+		log.info("subscribe child changes path:"+path);
 		zkh.subscribeChildChanges(path, new BrokerConnectionListener(topic));
 		try {
+			registerTopicInZk(PropertiesUtil.getValue("consumer.id"),topic);
 			doFetchBrokers(topic);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("ConsumerZookeeper error:"+topic, e);
 		}
 	}
+	
+	public void start(){
+		final String topic=PropertiesUtil.getValue("consumer.topics");
+		start(topic);
+	}
+	
 	public void registerTopicInZk(String prodId,String topic) throws Exception {
-		String path=productorSubjectPath+"/"+prodId+"/"+topic;
-		zkh.createPersistentPath(productorSubjectPath, productorSubjectPath);
-		zkh.createPersistentPath(productorSubjectPath+prodId, productorSubjectPath+prodId);
-		zkh.createEphemeralPath(path, getZKString(PropertiesUtil.getValue("productor.host"),PropertiesUtil.getValue("productor.port")));
+		String path=consumerSubjectPath+"/"+prodId+"/"+topic;
+		zkh.createPersistentPath(consumerSubjectPath, consumerSubjectPath);
+		zkh.createPersistentPath(consumerSubjectPath+prodId, consumerSubjectPath+prodId);
+		zkh.createPersistentPath(path, getZKString(PropertiesUtil.getValue("consumer.host"),PropertiesUtil.getValue("consumer.port")));
+		if(!zkh.getZkClient().exists(path+"/offset"))
+			zkh.createPersistentPath(path+"/offset", "0");
 	}
 	
 	public void doFetchBrokers(String topic) throws Exception {
 		String path=brokersPath+"/"+topic;
-		List<String> masterList=zkh.getChildrenMaybeNull(path+"/master");
+		List<String> masterList=zkh.getChildrenMaybeNull(path+"/slave");
 		
-		log.info("master path:"+path+"/master");
-		log.info("masterList size:"+masterList.size());
 		if(masterList!=null&&masterList.size()>0){
-			if(!masterList.equals(brokers)){
-				brokers.clear();
-				brokers.addAll(masterList);
-			}
-		}else{
-			masterList=zkh.getChildrenMaybeNull(path+"/slave");
 			log.info("slave path:"+path+"/slave");
 			log.info("slaveList size:"+masterList.size());
 			if(!masterList.equals(brokers)){
 				brokers.clear();
 				brokers.addAll(masterList);
 			}
+		}else{
+			masterList=zkh.getChildrenMaybeNull(path+"/master");
+			log.info("master path:"+path+"/master");
+			log.info("masterlist size:"+masterList.size());
+			if(!masterList.equals(brokers)){
+				brokers.clear();
+				brokers.addAll(masterList);
+			}
 		}
 	}
+	public int readFetchOffset(String topic){
+		String path=consumerSubjectPath+"/"+PropertiesUtil.getValue("consumer.id")+"/"+topic+"/offset";
+		String offset=zkh.readDataMaybeNull(path);
+		if(null==offset||offset.equals("")){
+			return 0;
+		}else{
+			return Integer.valueOf(offset);
+		}
+	}
+	public void updateFetchOffset(String topic,long offset) throws Exception{
+		log.info("fetch offset:"+offset);
+		String path=consumerSubjectPath+"/"+PropertiesUtil.getValue("consumer.id")+"/"+topic+"/offset";
+		zkh.updatePersistentPath(path,offset+"");
+		log.info(zkh.readData(path));
+	}
+	
+	public List<String> getBrokers() {
+		return brokers;
+	}
+	
 	public ClientConfig getMasterBroker(String topic)throws Exception {
 		ClientConfig cc=new ClientConfig();
 		String path=brokersPath+"/"+topic;
@@ -82,12 +112,9 @@ public class ProductorZookeeper {
 			log.info("brokers.size:"+brokers.size());
 			String brokerNodeId=brokers.get(0);//random,0 is tempvalue
 			log.info("brokerNodeId:"+brokerNodeId);
-			String master=zkh.readDataMaybeNull(path+"/master"+"/"+brokerNodeId);
+			String master=zkh.readDataMaybeNull(path+"/slave"+"/"+brokerNodeId);
 			if(null==master){
-				master=zkh.readDataMaybeNull(path+"/slave"+"/"+brokerNodeId);
-				zkh.subscribeChildChanges(path+"/slave", new BrokerConnectionListener(topic));
-			}else{
-				zkh.subscribeChildChanges(path+"/master", new BrokerConnectionListener(topic));
+				master=zkh.readDataMaybeNull(path+"/master"+"/"+brokerNodeId);
 			}
 			cc.setNodeId(brokerNodeId);
 			cc.setNodeValue(master);
@@ -128,6 +155,7 @@ public class ProductorZookeeper {
 	            return "cocamq://" + host + ":" + port;
 	        }
 	}
+	
 	public static void main(String[] args) {
 		
 	}

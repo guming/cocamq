@@ -5,11 +5,12 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
+import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.jinn.cocamq.commons.MessageException;
-import org.jinn.cocamq.commons.MessagePack;
-import org.jinn.cocamq.entity.Message;
+import org.jinn.cocamq.storage.exception.MessageException;
+import org.jinn.cocamq.protocol.message.MessagePack;
+import org.jinn.cocamq.protocol.message.Message;
 
 /**
  * file storage
@@ -20,7 +21,12 @@ public class PageStorage {
 	private static final Logger logger = Logger.getLogger(PageStorage.class);
 	private static final String BASE_DIR="D:/gumingcn/mqfile/";
 	PageSegmentSet fsm;
+    MessagePack messagePack=new MessagePack() {
+        @Override
+        public void convert(byte[] bytes,List list) {
 
+        }
+    };
 	public PageStorage(String topic) {
 		this.fsm = new PageSegmentSet(topic,0);;
 	}
@@ -31,7 +37,7 @@ public class PageStorage {
 	
 	public void append(Message msg) throws IOException{
 		try {
-			ByteBuffer buf=MessagePack.packMessageBuffer(msg);
+			ByteBuffer buf=messagePack.packMessageBuffer(msg);
 			fsm.appendBuffer(buf);
 		}catch (MessageException e) {
 			logger.error("append2file error", e);

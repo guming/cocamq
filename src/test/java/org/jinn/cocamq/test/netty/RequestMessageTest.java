@@ -1,6 +1,6 @@
 package org.jinn.cocamq.test.netty;
 
-import org.jinn.cocamq.entity.RequestMessage;
+import org.jinn.cocamq.broker.RequestMessage;
 import org.junit.Test;
 
 public class RequestMessageTest {

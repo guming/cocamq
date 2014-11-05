@@ -1,8 +1,9 @@
-package org.jinn.cocamq.client;
+package org.jinn.cocamq.client.consumer;
 
 import java.util.List;
 
-import org.jinn.cocamq.client.entity.MessageJson;
+import org.jinn.cocamq.client.producer.MessageProductor;
+import org.jinn.cocamq.protocol.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +17,7 @@ public class MessageProcessor {
 	public static  MessageProcessor getInstance(){
 		return instance;
 	}
-	public void processMessages(List<MessageJson> msgList){
+	public void processMessages(List<Message> msgList){
 			logger.info("list size:"+msgList.size());
 			//do something else
 	}

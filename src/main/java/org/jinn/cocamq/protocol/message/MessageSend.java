@@ -1,14 +1,14 @@
-package org.jinn.cocamq.entity;
+package org.jinn.cocamq.protocol.message;
 
 import java.io.Serializable;
 
 /**
  * Created by gumingcn on 14-9-3.
  */
-public class MessageBytes implements Message,Serializable{
+public class MessageSend implements Message,Serializable{
 
     private int  id;
-    private String data;
+    private String body;
     private String topic;
 
     public int getId() {
@@ -19,8 +19,7 @@ public class MessageBytes implements Message,Serializable{
         this.id = id;
     }
 
-
-    public MessageBytes(byte[] bytes) {
+    public MessageSend(byte[] bytes) {
         String content = new String(bytes);
         int pos = content.indexOf("#");
         if (pos == -1)
@@ -31,35 +30,44 @@ public class MessageBytes implements Message,Serializable{
         String body_str = content.substring(pos + 1);
         pos = body_str.indexOf("#");
         topic = body_str.substring(0, pos);
-        data = body_str.substring(pos+1);
-
-
+        body = body_str.substring(pos+1);
     }
 
-    public MessageBytes(int id, String data, String topic) {
+    public MessageSend(int id, String body, String topic) {
         this.id = id;
-        this.data = data;
+        this.body = body;
         this.topic = topic;
     }
 
-    public String getData() {
-        return data;
+    public String getBody() {
+        return body;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setBody(String body) {
+        this.body = body;
     }
 
     public String getTopic() {
         return topic;
     }
 
-    public void setTypic(String typic) {
-        this.topic = typic;
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 
-    public String getContent() {
-        String temp= id +"#"+topic+"#"+data;
+    public String getMessage() {
+        String temp= id +"#"+topic+"#"+body;
+        return temp;
+    }
+
+    @Override
+    public String getHeader() {
+        return id+"";
+    }
+
+    @Override
+    public String getPacket() {
+        String temp= id +"#"+body;
         return temp;
     }
 }

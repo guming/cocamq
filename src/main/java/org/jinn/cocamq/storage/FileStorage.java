@@ -1,74 +1,70 @@
 package org.jinn.cocamq.storage;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.util.List;
+import java.nio.channels.WritableByteChannel;
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.log4j.Logger;
-import org.jinn.cocamq.commons.ClientConfig;
-import org.jinn.cocamq.commons.MessageException;
-import org.jinn.cocamq.commons.MessagePack;
-import org.jinn.cocamq.entity.Message;
-import org.jinn.cocamq.client.entity.MessageJson;
-import org.jinn.cocamq.storage.fs.FileSegment;
-import org.jinn.cocamq.storage.fs.FileSegmentManager;
-
+import org.jinn.cocamq.util.MemTableCompaction;
+import org.jinn.cocamq.protocol.message.Message;
+import org.jinn.cocamq.storage.fs.PageStorage;
 /**
- * file storage
+ * MsgFileStorage interface for call
  * @author guming
  *
  */
-public class FileStorage {
-	private static final Logger logger = Logger.getLogger(FileStorage.class);
-	private static final String BASE_DIR="/Users/gumingcn/dev/mqfile/";
-	FileSegmentManager fsm;
-
-	public FileStorage(String topic) {
-		FileSegmentManager fsm=new FileSegmentManager(topic,0);
-		this.fsm = fsm;
-	}
-
-	public void appendToFile(Message msg) throws IOException{
-		try {
-			ByteBuffer buf=MessagePack.packMessageBuffer(msg);
-			fsm.appendBuffer(buf);
-		}catch (MessageException e) {
-			logger.error("append2file error", e);
-		} 
-	}
+public class FileStorage implements MessageStorage{
 	
-	public void readFromFile(long offset,int index){
-		FileSegment fs=fsm.findSegment(offset);
+	private final ConcurrentHashMap<String,PageStorage> fsMap=new ConcurrentHashMap<String,PageStorage>();
+	
+	public FileStorage(String topics) {
+		super();
+		String[] topic_arr=topics.split(",");
+		for (int i = 0; i < topic_arr.length; i++) {
+			String topic=topic_arr[i];
+			PageStorage ps=new PageStorage(topic);
+			fsMap.put(topic, ps);
+		}
+	}
+	public PageStorage getFSWithTopic(String topic){
+		return fsMap.get(topic);
+	}
+	@Override
+	public void appendMessage(Message msg) {
 		try {
-//			RandomAccessFile raf=new RandomAccessFile(new File(BASE_DIR+"/comments/"+"0000000000001024.mq"), "r");
-			final FileChannel channel = fs.filePage.getChannel();
-			channel.position(channel.position());
-			 final ByteBuffer buf = ByteBuffer.allocate((int) channel.size());
-	            while (buf.hasRemaining()) {
-	                channel.read(buf);
-	            }
-	            List<MessageJson> msgs=MessagePack.unpackMessages(buf.array(), (int)offset,new ClientConfig());
-	            for (MessageJson message : msgs) {
-	            	System.out.println(message.toString());
-				}
-	            buf.flip();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			getFSWithTopic(msg.getTopic()).append(msg);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-			
 		}
 	}
+	public void appendMessageFromMemTable(MemTableCompaction mtc) {
+		try {
+			for (Iterator<Message> iterator = mtc.getM1().getMmap().values().iterator(); iterator.hasNext();) {
+				
+				Message msg = (Message) iterator.next();
+				getFSWithTopic(msg.getTopic()).append(msg);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * number is the last update offset by consumer
+	 */
+	@Override
+	public void fetchTopicsMessages(final WritableByteChannel socketChanel,final long offset,final long range, String topics) {
+		getFSWithTopic(topics).read(socketChanel, offset,range);
+	}
+	
+	class StorageWatcher implements Runnable{
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+
 }

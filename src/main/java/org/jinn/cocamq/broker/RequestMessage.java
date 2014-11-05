@@ -1,9 +1,9 @@
-package org.jinn.cocamq.entity;
+package org.jinn.cocamq.broker;
 
 import java.io.Serializable;
 
 /**
- * request msg
+ * request msg which used to send to server
  * @author guming
  *
  */
@@ -41,11 +41,11 @@ public class RequestMessage implements Serializable{
 				}
 			}
 		}
-		public RequestMessage(String cmd, int size) {
-			super();
-			this.cmd = cmd;
-			this.offset = size;
-		}
+//		public RequestMessage(String cmd, int size) {
+//			super();
+//			this.cmd = cmd;
+//			this.offset = size;
+//		}
 		
 		public String getCmd() {
 			return cmd;

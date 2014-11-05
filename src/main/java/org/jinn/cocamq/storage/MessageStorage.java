@@ -2,7 +2,7 @@ package org.jinn.cocamq.storage;
 
 import java.nio.channels.WritableByteChannel;
 
-import org.jinn.cocamq.entity.Message;
+import org.jinn.cocamq.protocol.message.Message;
 
 
 public interface MessageStorage {
@@ -11,6 +11,6 @@ public interface MessageStorage {
 	
 //	public Message getMessageById(int msgId);
 	
-	public void fetchMessagesBeforeByTopic(final WritableByteChannel socketChanel,long offset,final long range, String topics);
+	public void fetchTopicsMessages(final WritableByteChannel socketChanel,long offset,final long range, String topics);
 	
 }

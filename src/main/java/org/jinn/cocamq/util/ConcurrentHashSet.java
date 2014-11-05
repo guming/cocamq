@@ -1,4 +1,4 @@
-package org.jinn.cocamq.commons;
+package org.jinn.cocamq.util;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

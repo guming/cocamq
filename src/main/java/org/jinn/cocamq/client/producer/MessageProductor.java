@@ -1,4 +1,4 @@
-package org.jinn.cocamq.client;
+package org.jinn.cocamq.client.producer;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
@@ -18,9 +18,9 @@ import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
 import org.jboss.netty.handler.codec.frame.DelimiterBasedFrameDecoder;
 import org.jboss.netty.handler.codec.frame.Delimiters;
-import org.jinn.cocamq.command.PutCommand;
-import org.jinn.cocamq.commons.ClientConfig;
-import org.jinn.cocamq.entity.Message;
+import org.jinn.cocamq.protocol.command.PutCommand;
+import org.jinn.cocamq.client.ClientConfig;
+import org.jinn.cocamq.protocol.message.Message;
 
 public class MessageProductor {
 	

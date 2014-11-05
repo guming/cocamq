@@ -1,9 +1,9 @@
 package org.jinn.cocamq.test.fs;
 
-import org.jinn.cocamq.commons.MemTable;
-import org.jinn.cocamq.commons.MemTableCompaction;
-import org.jinn.cocamq.client.entity.MessageJson;
-import org.jinn.cocamq.storage.MsgFileStorage;
+import org.jinn.cocamq.protocol.message.Message;
+import org.jinn.cocamq.protocol.message.MessageSend;
+import org.jinn.cocamq.util.CheckCRC32;
+import org.jinn.cocamq.util.MemTable;
 import org.junit.Test;
 
 import com.google.common.base.Stopwatch;
@@ -15,60 +15,35 @@ public class TestMemtable {
 		MemTable mt = new MemTable();
 		Stopwatch sw = new Stopwatch();
 		sw.start();
-		MessageJson msg = new MessageJson();
-//		msg.setTopic("comment");
-//		msg.setType(1);
-//		msg.setMemo("msg test" + UUID.randomUUID().toString());
-//		msg.setIp(11);
-//		msg.setUid(45);
-//		msg.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
 		for (int i = 0; i < 200000; i++) {
-//			msg.setId(1000 + i);
-//			mt.append(msg);
+            Message msg =getMessage(i);
+            mt.append(msg);
 		}
 		sw.stop();
 		System.out.println("ex time set:" + sw);
 		mt.getSnapShot();
 	}
 
-	@Test
-	public void testAppend2File() {
-		final MsgFileStorage mfs = new MsgFileStorage("comment");
-		MemTableCompaction mtc = new MemTableCompaction();
-		MemTable mt = new MemTable();
-		Stopwatch sw = new Stopwatch();
-		sw.start();
-		MessageJson msg = new MessageJson();
-//		msg.setTopic("comment");
-//		msg.setType(1);
-//		msg.setMemo("msg test" + UUID.randomUUID().toString());
-//		msg.setIp(11);
-//		msg.setUid(45);
-//		msg.setUuid(UUID.randomUUID().toString().replaceAll("-", ""));
-		for (int i = 0; i < 80000; i++) {
-//			msg.setId(1000 + i);
-			// try {
-			// MessageQueue.getBqueue().put(msg);
-			// } catch (InterruptedException e) {
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
-//			mt.append(msg);
-		}
-		System.out.println("ex time set:" + sw);
-		mtc.setM1(mt);
-		sw.stop();
-		mt.getSnapShot();
-		// System.out.println("queue size:"+MessageQueue.getBqueue().size());
-		sw.reset();
-		sw.start();
-		mfs.appendMessageFromMemTable(mtc);
-		// try {
-		// } catch (InterruptedException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		sw.stop();
-		System.out.println("ex time set2file:" + sw);
-	}
+    private Message getMessage(final int i){
+        String temp2="{\"action\":\"edit\",\"redis_key_hash\":\"1\",\"db_key_hash\":\"\"," +
+                "\"time\":\"1406168332.35081900\",\"source\":\"web\",\"mars_cid\":\"\"," +
+                "\"session_id\":\"\",\"info\":{\"cart_id\":\"6185\",\"user_id\":\""+i+"\",\"brand_id\":\"7511\"," +
+                "\"num\":2,\"warehouse\":\"as大劫案快解放但就是放得开束ash侃大山" +
+                "ash看动画东方航空上帝会富士康解释都很费劲第三方还是开货到付款导师考核发解释都开发还是看到横峰街道很费劲黑道教父黑道教" +
+                "ash看动画东方航空上帝会富士康解释都很费劲第三方还是开货到付款导师考核发解释都开发还是看到横峰街道很费劲黑道教父黑道教" +
+                "都很费劲第三方还是开货到付款导师考核发解释都开发还是看到横峰街道很费劲黑道教父黑道教" +
+                "ash看动画东方航空上帝会富士康解释都很费劲第三方还师考核发解释都开发还是看到横峰街道很费劲黑道教父黑道教" +
+                "父花雕鸡开户行静安寺咁大噶就是个法华经爱就是大是大非带结发华东师范\",\"merchandise_id\":\"1001950\",\"channel\":\"te\"," +
+                "\"cart_record_id\":\"8765\",\"size_id\":\"2756943\"}}";
+
+//        String temp2="{\"action\":\"edit\",\"redis_key_hash\":\"1\",\"DB_key_hash\":\"\"," +
+//                "\"time\":\"1406168332.35081900\",\"source\":\"web\",\"mars_cid\":\"\"," +
+//                "\"session_id\":\"\",\"info\":{\"cart_id\":\"6185\",\"user_id\":\""+i+"\",\"brand_id\":\"7511\"," +
+//                "\"num\":2,\"warehouse\":\"asd\",\"merchandise_id\":\"1001950\",\"channel\":\"te\"," +
+//                "\"cart_record_id\":\"8765\",\"size_id\":\"2756943\"}}";
+        byte[] temp2Bytes=temp2.getBytes();
+        int checknum= CheckCRC32.crc32(temp2Bytes);
+        Message msg = new MessageSend(checknum,temp2,"comment");
+        return msg;
+    }
 }

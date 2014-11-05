@@ -10,10 +10,9 @@ import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.group.DefaultChannelGroup;
 import org.jboss.netty.channel.socket.ServerSocketChannelFactory;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
-import org.jinn.cocamq.commons.MessageQueue;
-import org.jinn.cocamq.entity.Message;
+import org.jinn.cocamq.protocol.message.Message;
+import org.jinn.cocamq.storage.FileStorage;
 import org.jinn.cocamq.storage.MessageStorage;
-import org.jinn.cocamq.storage.MsgFileStorage;
 import org.jinn.cocamq.util.PropertiesUtil;
 
 public class MessageBroker {
@@ -136,7 +135,7 @@ public class MessageBroker {
 		}
 	}
 	public static void main(String[] args) {
-		MessageStorage ms=new MsgFileStorage("comment");
+		MessageStorage ms=new FileStorage("comment");
 		MessageBroker mb = new MessageBroker();
 		mb.msgStorage=ms;
 		mb.start();

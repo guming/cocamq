@@ -1,11 +1,11 @@
 package org.jinn.cocamq.test.netty;
 
 import org.apache.log4j.Logger;
-import org.jinn.cocamq.client.MessageProductor;
-import org.jinn.cocamq.commons.CheckCRC32;
-import org.jinn.cocamq.commons.CommonExcutor;
-import org.jinn.cocamq.entity.Message;
-import org.jinn.cocamq.entity.MessageBytes;
+import org.jinn.cocamq.client.producer.MessageProductor;
+import org.jinn.cocamq.util.CheckCRC32;
+import org.jinn.cocamq.util.CommonExcutor;
+import org.jinn.cocamq.protocol.message.Message;
+import org.jinn.cocamq.protocol.message.MessageSend;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 
@@ -103,7 +103,7 @@ public class MessageProducerTest {
 //                "\"cart_record_id\":\"8765\",\"size_id\":\"2756943\"}}";
         byte[] temp2Bytes=temp2.getBytes();
         int checknum=CheckCRC32.crc32(temp2Bytes);
-		Message msg = new MessageBytes(checknum,temp2,"comment");
+		Message msg = new MessageSend(checknum,temp2,"comment");
 		return msg;
 	}
 	 public static void main(String[] args) {

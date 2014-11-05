@@ -31,8 +31,6 @@ public class SimpledPipelineFactory implements ChannelPipelineFactory {
 //				new ExecutionHandler(Executors.newCachedThreadPool()));//接收消息有问题,buffer不完整--单机测试环境
 		pipeline.addLast("frameDecoder", new DelimiterBasedFrameDecoder(
 				1024 * 64, Delimiters.lineDelimiter()));
-//		pipeline.addLast("decoder", new StringDecoder(CharsetUtil.UTF_8));
-//		pipeline.addLast("encoder", new StringEncoder(CharsetUtil.UTF_8));
 		pipeline.addLast("executor", new ExecutionHandler(
 				new OrderedMemoryAwareThreadPoolExecutor(16, 1048576, 1048576)));
 		pipeline.addLast("handler", new MessageBrokerHandler(msgStorage,

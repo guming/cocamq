@@ -1,6 +1,6 @@
-package org.jinn.cocamq.command;
+package org.jinn.cocamq.protocol.command;
 
-import org.jinn.cocamq.entity.Message;
+import org.jinn.cocamq.protocol.message.Message;
 
 import java.io.Serializable;
 
@@ -13,18 +13,9 @@ public class PutCommand implements Command,Serializable {
     private Message body;
 
     public PutCommand(Message msg) {
-//        String content=msg.getData().toString();
-//        int bodylength=msg.getData().length;
-//        byte[] prefixBytes=(command+"#"+msg.getId()+"#"+msg.getTopic()+"#"+bodylength+"#").getBytes();
         this.body=msg;
     }
 
-    public PutCommand(String buf) {
-
-        if(buf.indexOf("#")!=-1){
-
-        }
-    }
 
     @Override
     public byte[] makeCommand() {
@@ -38,7 +29,7 @@ public class PutCommand implements Command,Serializable {
     }
 
     public String getCommandContent(){
-        String content=body.getContent();
+        String content=body.getMessage();
         return command+"#"+content.length()+"#"+content+"\n";
     }
 

@@ -1,7 +1,7 @@
 package org.jinn.cocamq.test.zk;
 
-import org.jinn.cocamq.client.ProductorZookeeper;
-import org.jinn.cocamq.commons.ClientConfig;
+import org.jinn.cocamq.client.producer.ProductorZookeeper;
+import org.jinn.cocamq.client.ClientConfig;
 import org.junit.Test;
 
 public class ProductorZookeeperTest {

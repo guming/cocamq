@@ -1,4 +1,4 @@
-package org.jinn.cocamq.commons;
+package org.jinn.cocamq.storage.exception;
 
 public class MessageException extends Exception{
 

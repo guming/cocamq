@@ -11,7 +11,8 @@ import org.jboss.netty.channel.ExceptionEvent;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
 import org.jboss.netty.channel.group.DefaultChannelGroup;
-import org.jinn.cocamq.entity.*;
+import org.jinn.cocamq.protocol.message.Message;
+import org.jinn.cocamq.protocol.message.MessageSend;
 import org.jinn.cocamq.storage.MessageStorage;
 
 public class MessageBrokerHandler extends SimpleChannelUpstreamHandler {
@@ -48,13 +49,13 @@ public class MessageBrokerHandler extends SimpleChannelUpstreamHandler {
             if (cmd != null && cmd.equals("login")) {
 				sendResponse(ctx);
 			}else if(cmd.equals("set")){
-                Message msg=new MessageBytes(rpm.getBody());
+                Message msg=new MessageSend(rpm.getBody());
                 msgStorage.appendMessage(msg);
 			}
 			else if(cmd.equals("get")){
 				SimpleWritableByteChannel swb=new SimpleWritableByteChannel();
 				swb.channel=e.getChannel();
-                msgStorage.fetchMessagesBeforeByTopic(swb, rpm.getOffset(), rpm.getFetch_size(), "comment");
+                msgStorage.fetchTopicsMessages(swb, rpm.getOffset(), rpm.getFetch_size(), "comment");
 				// Channels.fireMessageReceived(e.getChannel(),buf);
 			}else{
 				logger.warn("do nothing:"+e.getRemoteAddress());

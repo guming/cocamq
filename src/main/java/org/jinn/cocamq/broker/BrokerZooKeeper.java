@@ -8,7 +8,7 @@ import org.I0Itec.zkclient.IZkStateListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.zookeeper.Watcher.Event.KeeperState;
-import org.jinn.cocamq.commons.ConcurrentHashSet;
+import org.jinn.cocamq.util.ConcurrentHashSet;
 import org.jinn.cocamq.util.PropertiesUtil;
 import org.jinn.zktools.RegisterConfig;
 import org.jinn.zktools.ZkConfig;

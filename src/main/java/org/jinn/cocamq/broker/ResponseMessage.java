@@ -1,4 +1,4 @@
-package org.jinn.cocamq.entity;
+package org.jinn.cocamq.broker;
 
 import java.io.Serializable;
 

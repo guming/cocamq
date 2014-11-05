@@ -1,6 +1,6 @@
 package org.jinn.cocamq.test.zk;
 
-import org.jinn.cocamq.client.ConsumerZookeeper;
+import org.jinn.cocamq.client.consumer.ConsumerZookeeper;
 import org.junit.Test;
 
 public class CunsumerZookeeperTest {

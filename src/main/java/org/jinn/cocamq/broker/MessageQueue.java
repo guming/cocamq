@@ -1,8 +1,8 @@
-package org.jinn.cocamq.commons;
+package org.jinn.cocamq.broker;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.jinn.cocamq.entity.Message;
+import org.jinn.cocamq.protocol.message.Message;
 
 
 public class MessageQueue {

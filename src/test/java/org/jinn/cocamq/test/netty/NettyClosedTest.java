@@ -2,7 +2,7 @@ package org.jinn.cocamq.test.netty;
 
 import com.google.common.base.Stopwatch;
 import org.apache.log4j.Logger;
-import org.jinn.cocamq.client.MessageProductor;
+import org.jinn.cocamq.client.producer.MessageProductor;
 import org.junit.Test;
 
 /**

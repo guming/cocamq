@@ -1,19 +1,19 @@
-package org.jinn.cocamq.client;
+package org.jinn.cocamq.client.consumer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jinn.cocamq.commons.ClientConfig;
+import org.jinn.cocamq.client.ClientConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class MessageConsumerManager {
+public class ConsumerBootstrap {
 	
 	private final static Logger logger = LoggerFactory
-			.getLogger(MessageConsumerManager.class);
+			.getLogger(ConsumerBootstrap.class);
 	
-	private int fetch_length=1024*4;//default 12k
+	private int fetch_length=1024*4;//default 4k
 	private ConsumerZookeeper cz;
 	
 	private List<MessageConsumer> mcList=new ArrayList<MessageConsumer>();
@@ -59,8 +59,7 @@ public class MessageConsumerManager {
 		}
 	}
 	public static void main(String[] args) {
-		MessageConsumerManager mcm=new MessageConsumerManager();
+		ConsumerBootstrap mcm=new ConsumerBootstrap();
 		mcm.start();
-		
 	}
 }

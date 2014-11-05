@@ -3,9 +3,9 @@ package org.jinn.cocamq.test.netty;
 import java.util.concurrent.CountDownLatch;
 
 import org.apache.log4j.Logger;
-import org.jinn.cocamq.client.MessageConsumer;
-import org.jinn.cocamq.client.MessageProcessor;
-import org.jinn.cocamq.commons.CommonExcutor;
+import org.jinn.cocamq.client.consumer.MessageConsumer;
+import org.jinn.cocamq.client.consumer.MessageProcessor;
+import org.jinn.cocamq.util.CommonExcutor;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 
@@ -46,11 +46,11 @@ public class MessageConsumerTest {
 			int offset=mp.getCc().getOffset();
 //			mp.getCc().setOffset(920);
             System.out.println("the offset is :" + offset);
-			mp.fetchMessage(offset, 1024*2);
+			mp.fetchMessage(offset, 1024*4);
 			stopwatch.stop();
 			logger.info("testFetchMessages finished:" + stopwatch);
             try {
-                Thread.sleep(1000 * 2);
+                Thread.sleep(1000);
             } catch (Exception e) {
                 // TODO: handle exception
             }

@@ -1,4 +1,4 @@
-package org.jinn.cocamq.command;
+package org.jinn.cocamq.protocol.command;
 
 
 public class GetCommand implements Command {
@@ -12,14 +12,7 @@ public class GetCommand implements Command {
 		this.offset = offset;
 		this.fetch_length = fetch_length;
 	}
-	
-	
-	
-	public GetCommand(String buf) {
-		if(buf.indexOf("#")!=-1){
-			
-		}
-	}
+
 
 	@Override
 	public byte[] makeCommand() {

@@ -1,4 +1,4 @@
-package org.jinn.cocamq.commons;
+package org.jinn.cocamq.util;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
