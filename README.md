@@ -29,9 +29,9 @@ cocamq
     broker transferTo consumer
     消费者仿照kafka方式，根据offset向broker拉取固定长度消息
 
-p.s.
+关于写入比较(利用nio Filechannel顺序写 和 MappedByteBuffer)
 
-   关于写入比较了利用nio Filechannel顺序写 和 MappedByteBuffer
-   MappedByteBuffer 在mac os 下性略高nio Filechannel 顺序写
-                    在windos 下mapedbuffer性能好于filechannel顺序写。快10-20%
-   详见MsgFileStorageTest.java和UseMappedFile.java
+     
+    在mac os 下MappedByteBuffer性略高nio Filechannel 顺序写 (与可利用内存有关)
+    在windos 下mapedbuffer性能好于filechannel顺序写。快10-20%
+    详见MsgFileStorageTest.java和UseMappedFile.java
