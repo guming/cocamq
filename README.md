@@ -10,8 +10,8 @@ cocamq
 目前完成写入测试
 
      启动本地zookeeper
-     StartServer.java
-     MessageProducerTest.java
+     BrokerBootstrap.java 或者运行script/broker.sh
+     MessageProducerTest.java 
 
 硬件 
 
@@ -25,6 +25,7 @@ cocamq
 读取速度
 
     初步完成
+    运行junit MessageConsumerTest.java
     利用nio+netty zerocopy
     broker transferTo consumer
     消费者仿照kafka方式，根据offset向broker拉取固定长度消息 
