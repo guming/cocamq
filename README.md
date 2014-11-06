@@ -27,7 +27,8 @@ cocamq
     初步完成
     利用nio+netty zerocopy
     broker transferTo consumer
-    消费者仿照kafka方式，根据offset向broker拉取固定长度消息
+    消费者仿照kafka方式，根据offset向broker拉取固定长度消息 
+    拉取8k数据<1ms
 
 关于写入比较(利用nio Filechannel顺序写 和 MappedByteBuffer)
 
