@@ -18,7 +18,7 @@ public class PageSegment{
     final long start;
     final File file;//the real file
     public FileHandler filePage;//the wrapper of file
-	private long readlimit=32*1024;
+	private long readlimit=1024*1024;
 	private static final String FILE_SUFFIX = ".mq";
     public PageSegment(final long start, final File file,final boolean checkWrite) {
         super();

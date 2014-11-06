@@ -13,7 +13,7 @@ public class ConsumerBootstrap {
 	private final static Logger logger = LoggerFactory
 			.getLogger(ConsumerBootstrap.class);
 	
-	private int fetch_length=1024*4;//default 4k
+	private int fetch_length=1024*64;//default 4k
 	private ConsumerZookeeper cz;
 	
 	private List<MessageConsumer> mcList=new ArrayList<MessageConsumer>();

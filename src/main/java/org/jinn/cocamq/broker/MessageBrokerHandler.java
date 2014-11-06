@@ -55,6 +55,7 @@ public class MessageBrokerHandler extends SimpleChannelUpstreamHandler {
 			else if(cmd.equals("get")){
 				SimpleWritableByteChannel swb=new SimpleWritableByteChannel();
 				swb.channel=e.getChannel();
+//                swb.channel.getConfig().setOption("sendBufferSize",32*1024);
                 msgStorage.fetchTopicsMessages(swb, rpm.getOffset(), rpm.getFetch_size(), "comment");
 				// Channels.fireMessageReceived(e.getChannel(),buf);
 			}else{

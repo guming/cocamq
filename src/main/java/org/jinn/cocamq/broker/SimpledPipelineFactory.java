@@ -32,7 +32,7 @@ public class SimpledPipelineFactory implements ChannelPipelineFactory {
 		pipeline.addLast("frameDecoder", new DelimiterBasedFrameDecoder(
 				1024 * 64, Delimiters.lineDelimiter()));
 		pipeline.addLast("executor", new ExecutionHandler(
-				new OrderedMemoryAwareThreadPoolExecutor(16, 1048576, 1048576)));
+				new OrderedMemoryAwareThreadPoolExecutor(8, 1048576, 1048576)));
 		pipeline.addLast("handler", new MessageBrokerHandler(msgStorage,
 				channelGroup));
 		return pipeline;

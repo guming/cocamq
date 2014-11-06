@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
 
+import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.DirectChannelBufferFactory;
 import org.jboss.netty.channel.Channel;
 
@@ -25,8 +26,15 @@ public class SimpleWritableByteChannel implements WritableByteChannel {
 	@Override
 	public int write(ByteBuffer src) throws IOException {
 		// TODO Auto-generated method stub
-		channel.write(df.getBuffer(src));
-		return src.capacity();
+        ChannelBuffer cb=df.getBuffer(src);
+//        ChannelBuffer cb1=cb.copy();
+//        byte[] temp=new byte[src.limit()];
+//        cb1.getBytes(0,temp);
+//        System.out.println("transfer:" + new String(temp) + "," + System.currentTimeMillis());
+//        System.out.println("transfer size:"+src.limit());
+        channel.write(cb);
+
+        return src.capacity();
 	}
 
 }

@@ -4,7 +4,7 @@ import java.util.concurrent.CountDownLatch;
 
 import org.apache.log4j.Logger;
 import org.jinn.cocamq.client.consumer.MessageConsumer;
-import org.jinn.cocamq.client.consumer.MessageProcessor;
+import org.jinn.cocamq.client.consumer.SimpleMessageProcessor;
 import org.jinn.cocamq.util.CommonExcutor;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
@@ -15,7 +15,7 @@ public class MessageConsumerTest {
 
 	private final static Logger logger = Logger
 			.getLogger(MessageConsumerTest.class);
-
+    int fetch=8*1024;
 	@Test
 	public void testConnet2Broker() {
 
@@ -37,16 +37,16 @@ public class MessageConsumerTest {
 	@Test
 	public void testFetchMessages() {
 
-		MessageConsumer mp = new MessageConsumer("comment",MessageProcessor.getInstance());
+		MessageConsumer mp = new MessageConsumer("comment", SimpleMessageProcessor.getInstance());
 		mp.start();
 		while(true){
 		try {
 			Stopwatch stopwatch = new Stopwatch();
 			stopwatch.start();
+//            mp.getCz().updateFetchOffset("comment",0);
 			int offset=mp.getCc().getOffset();
-//			mp.getCc().setOffset(920);
             System.out.println("the offset is :" + offset);
-			mp.fetchMessage(offset, 1024*4);
+			mp.fetchMessage(offset, fetch);
 			stopwatch.stop();
 			logger.info("testFetchMessages finished:" + stopwatch);
             try {

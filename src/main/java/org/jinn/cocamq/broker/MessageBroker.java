@@ -1,11 +1,13 @@
 package org.jinn.cocamq.broker;
 
 import java.net.InetSocketAddress;
+import java.nio.ByteOrder;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.jboss.netty.bootstrap.ServerBootstrap;
+import org.jboss.netty.buffer.HeapChannelBufferFactory;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.group.DefaultChannelGroup;
 import org.jboss.netty.channel.socket.ServerSocketChannelFactory;
@@ -52,12 +54,16 @@ public class MessageBroker {
 				Executors.newCachedThreadPool());
 		allChannels = new DefaultChannelGroup("messageChannelGroup");
 		final ServerBootstrap bootstrap = new ServerBootstrap(channelFactory);
+//        bootstrap.setOption("child.bufferFactory", HeapChannelBufferFactory.getInstance(ByteOrder.LITTLE_ENDIAN));
 		bootstrap.setOption("child.tcpNoDelay", true);
 		bootstrap.setOption("child.keepAlive", true);
         bootstrap.setOption("connectTimeoutMillis",3*1000);
-		bootstrap.setOption("child.reuseAddress", true);
-		bootstrap.setOption("child.receiveBufferSize", 1024 * 64);//max buffersize
-		bootstrap.setPipelineFactory(createPipelineFactory(allChannels,msgStorage));
+        bootstrap.setOption("receiveBufferSize", 1024 * 64);//max buffersize
+        bootstrap.setOption("sendBufferSize", 1024 * 16);//max buffersize
+        bootstrap.setOption("child.reuseAddress", true);
+        bootstrap.setOption("child.receiveBufferSize", 1024 * 64);//max buffersize
+        bootstrap.setOption("child.sendBufferSize", 1024 * 16);//max buffersize
+        bootstrap.setPipelineFactory(createPipelineFactory(allChannels,msgStorage));
 		// ChannelPipelineFactory pipelineFactory;
 		// if (binary){
 		// //do nothing

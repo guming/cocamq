@@ -8,13 +8,13 @@ import java.nio.channels.WritableByteChannel;
 
 public interface FileHandler {
 
-	    public long append(ByteBuffer buff) throws IOException;
+	public long append(ByteBuffer buff) throws IOException;
 
-	    public void flush() throws IOException;
+	public void flush() throws IOException;
 
-	    public void read(final WritableByteChannel socketChanel,long start,long end) throws IOException;
+    public void read(final WritableByteChannel socketChanel,long start,long end) throws IOException;
 	    
-	    public FileChannel getChannel();
+	public FileChannel getChannel();
 
     public boolean checkWrite();
 

@@ -14,7 +14,7 @@ public abstract class MessagePack {
 	 private static final Logger logger = Logger.getLogger(MessagePack.class);
 	
 	 public static final int HEADER_LEN = 16;
-	 
+
 //	 public static final int MAX_READ_BUFFER_SIZE = Integer.parseInt(System.getProperty("notify.remoting.max_read_buffer_size", "2097152"));
 
 	 /**
@@ -44,35 +44,41 @@ public abstract class MessagePack {
 	        return buffer;
 	    }
 	 
-	 public  final void unpackMessages(final byte[] data, final int offset,ClientConfig cc,List<Message> list)
+	 public  final boolean unpackMessages(final byte[] data, final int offset,ClientConfig cc,List<Message> list)
 	            throws Exception {
 		    int length=data.length;
-		    int length_org=data.length;
+		    int length_org = data.length;
 		    int myoffset=0;
 		    int count =0;
-         System.out.println(new String(data));
+         boolean flag=true;
          while(length>0){
-		        final ByteBuffer buf = ByteBuffer.wrap(data, myoffset, HEADER_LEN);
-		        final int msgLen = buf.getInt();
-		        final int checksum = buf.getInt();
-		        int msgOffset = myoffset + HEADER_LEN;
+             try {
+                 final ByteBuffer buf = ByteBuffer.wrap(data, myoffset, HEADER_LEN);
+                 final int msgLen = buf.getInt();
+                 final int checksum = buf.getInt();
+                 int msgOffset = myoffset + HEADER_LEN;
 //		        vailidateMessage(msgOffset, msgLen, checksum, data);
-		        if(msgOffset+msgLen+8<=length_org){
-                    final byte[] dest = new byte[msgLen];
-		        	System.arraycopy(data, msgOffset, dest, 0, msgLen);
-		        	logger.warn("message:"+new String(dest));
-                    convert(dest,list);
-			        length-= HEADER_LEN+msgLen;
-			        myoffset+= HEADER_LEN+msgLen;
-			        count++;
-		        }
-		        else{
-		        	logger.warn("message not completed");
-		        	length=-1;
-		        }
+                 if (msgOffset + msgLen + 8 <= length_org) {
+                     final byte[] dest = new byte[msgLen];
+                     System.arraycopy(data, msgOffset, dest, 0, msgLen);
+                     logger.warn("message:" + new String(dest));
+                     convert(dest, list);
+                     length -= HEADER_LEN + msgLen;
+                     myoffset += HEADER_LEN + msgLen;
+                     count++;
+                 } else {
+                     logger.warn("message not completed");
+                     length = -1;
+                 }
+             }catch(NegativeArraySizeException e){
+                 e.printStackTrace();
+                 length=-1;
+                 flag=false;
+             }
 		    }
 		    cc.setOffset(myoffset+offset);
 		    System.out.println("---------------"+count);
+         return flag;
 	  }
 
     /**

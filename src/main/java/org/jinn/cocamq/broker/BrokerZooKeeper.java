@@ -104,6 +104,8 @@ public class BrokerZooKeeper implements PropertyChangeListener{
         @Override
         public void handleStateChanged(final KeeperState state) throws Exception {
             // do nothing, since zkclient will do reconnect for us.
+            redoRegisterInZk();
+            log.info("handleNewSession and re-registering server");
         }
 	}
 	
