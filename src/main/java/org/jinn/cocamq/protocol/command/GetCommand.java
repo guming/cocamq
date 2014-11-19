@@ -27,7 +27,7 @@ public class GetCommand implements Command {
 	}
 	
 	public String getCommandContent(){
-		return command+"#"+offset+"#"+fetch_length+"\n";
+		return command+" "+offset+" "+fetch_length+"\r\n";
 	}
 
 	@Override

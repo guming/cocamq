@@ -30,7 +30,7 @@ public class PutCommand implements Command,Serializable {
 
     public String getCommandContent(){
         String content=body.getMessage();
-        return command+"#"+content.length()+"#"+content+"\n";
+        return command+" "+content.length()+" "+content+"\r\n";
     }
 
     @Override

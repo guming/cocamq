@@ -59,11 +59,9 @@ public class MessageBrokerHandler extends SimpleChannelUpstreamHandler {
                 msgStorage.fetchTopicsMessages(swb, rpm.getOffset(), rpm.getFetch_size(), "comment");
 				// Channels.fireMessageReceived(e.getChannel(),buf);
 			}else{
-				logger.warn("do nothing:"+e.getRemoteAddress());
+				logger.warn("not support command :"+e.getRemoteAddress());
 			}
 		} catch (Exception ex) {
-//			logger.error("messageReceived error:" + e.getRemoteAddress(),
-//					ex);
 			logger.error("messageReceived error,the msg is:" +temp);
 			throw ex;
 		}

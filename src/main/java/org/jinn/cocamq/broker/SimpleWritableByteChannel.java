@@ -32,8 +32,8 @@ public class SimpleWritableByteChannel implements WritableByteChannel {
 //        cb1.getBytes(0,temp);
 //        System.out.println("transfer:" + new String(temp) + "," + System.currentTimeMillis());
 //        System.out.println("transfer size:"+src.limit());
-        channel.write(cb);
-
+//        if( channel.isWritable())//
+        channel.write(cb).awaitUninterruptibly(50);//ms
         return src.capacity();
 	}
 

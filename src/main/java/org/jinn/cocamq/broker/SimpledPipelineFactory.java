@@ -27,6 +27,8 @@ public class SimpledPipelineFactory implements ChannelPipelineFactory {
 	public ChannelPipeline getPipeline() throws Exception {
 		// TODO Auto-generated method stub
 		ChannelPipeline pipeline = Channels.pipeline();
+        AutoFlusher bufferedWriter=new AutoFlusher();
+//        pipeline.addFirst("buffer", bufferedWriter);
 //		pipeline.addLast("execution",
 //				new ExecutionHandler(Executors.newCachedThreadPool()));//接收消息有问题,buffer不完整--单机测试环境
 		pipeline.addLast("frameDecoder", new DelimiterBasedFrameDecoder(

@@ -285,7 +285,6 @@ public abstract class FrameDecoder extends SimpleChannelUpstreamHandler implemen
     @Override
     public void messageReceived(
             ChannelHandlerContext ctx, MessageEvent e) throws Exception {
-
         Object m = e.getMessage();
 
         if (!(m instanceof ChannelBuffer)) {
@@ -294,11 +293,10 @@ public abstract class FrameDecoder extends SimpleChannelUpstreamHandler implemen
         }
 
         ChannelBuffer input = (ChannelBuffer) m;
-//        System.out.println(new String(input.array()));
         if (!input.readable()) {
             return;
         }
-
+        System.out.println("recv size "+input.array().length+","+System.currentTimeMillis());
         if (cumulation == null) {
             try {
                 // the cumulation buffer is not created yet so just pass the input to callDecode(...) method
@@ -314,6 +312,7 @@ public abstract class FrameDecoder extends SimpleChannelUpstreamHandler implemen
                 updateCumulation(ctx, input);
             }
         }
+
     }
 
     protected ChannelBuffer appendToCumulation(ChannelBuffer input) {
@@ -441,7 +440,6 @@ public abstract class FrameDecoder extends SimpleChannelUpstreamHandler implemen
                         "decode() method must read at least one byte " +
                                 "if it returned a frame (caused by: " + getClass() + ')');
             }
-
             unfoldAndFireMessageReceived(context, remoteAddress, frame);
         }
     }
@@ -565,6 +563,7 @@ public abstract class FrameDecoder extends SimpleChannelUpstreamHandler implemen
      *
      */
     protected ChannelBuffer extractFrame(ChannelBuffer buffer, int index, int length) {
+        System.out.println("index:"+index+","+length+",buffer:");
         ChannelBuffer frame = buffer.factory().getBuffer(length);
         frame.writeBytes(buffer, index, length);
         return frame;

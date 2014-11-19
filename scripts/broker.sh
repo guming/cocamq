@@ -25,7 +25,7 @@ start(){
                       -XX:+PrintGCDetails \
                       -XX:+PrintGCTimeStamps \
                       -Xloggc:logs/gc`date +%Y%m%d%H%M%S`.log \
-                      -cp $CP org.jinn.cocamq.broker.StartServer >>/opt/logs/mqlog.log &
+                      -cp $CP org.jinn.cocamq.broker.BrokerBootstrap >>/opt/logs/mqlog.log &
                 echo $! >"$pidfile"
                 if [ "$?" -eq 0 ] ; then
                         printf 'Done\n'

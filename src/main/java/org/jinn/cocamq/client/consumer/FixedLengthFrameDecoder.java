@@ -43,6 +43,8 @@ public class FixedLengthFrameDecoder  extends FrameDecoder {
     @Override
     protected Object decode(
             ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws Exception {
+//        System.out.println("decode:"+buffer.toByteBuffer().limit());
+//        System.out.println("decode:"+new String(buffer.toByteBuffer().array()));
         if (buffer.readableBytes() < frameLength) {
             return null;
         } else {
@@ -54,10 +56,8 @@ public class FixedLengthFrameDecoder  extends FrameDecoder {
 
     @Override
     protected ChannelBuffer newCumulationBuffer(ChannelHandlerContext ctx, int minimumCapacity) {
-        System.out.println(frameLength);
         ChannelBufferFactory factory = ctx.getChannel().getConfig().getBufferFactory();
         if (allocateFullBuffer) {
-
             return factory.getBuffer(frameLength);
         }
         return super.newCumulationBuffer(ctx, minimumCapacity);

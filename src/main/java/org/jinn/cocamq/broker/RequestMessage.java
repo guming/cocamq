@@ -20,7 +20,7 @@ public class RequestMessage implements Serializable{
 			if(null==message){
 				cmd="none";
 			}else{
-				int pos = message.indexOf("#");
+				int pos = message.indexOf(" ");
 				if (pos == -1)
 				{
 					cmd = message;
@@ -29,7 +29,7 @@ public class RequestMessage implements Serializable{
 				{
 					cmd = message.substring(0, pos);
 					String body_str = message.substring(pos + 1);
-					pos = body_str.indexOf("#");
+					pos = body_str.indexOf(" ");
 					offset = Integer.valueOf(body_str.substring(0, pos));
 					body_str = body_str.substring(pos + 1);
 					if(cmd.equals("set")){
@@ -55,11 +55,11 @@ public class RequestMessage implements Serializable{
 		}
 		public String getCmdAndBody(){
 			if(cmd.equals("get")){
-				return cmd+"#"+offset+"#"+fetch_size+"\n";
+				return cmd+" "+offset+" "+fetch_size+"\r\n";
 			}else{
 				String body_value=body.toString();
 
-				return cmd+"#"+body_value.length()+"#"+body.toString()+"\n";
+				return cmd+" "+body_value.length()+" "+body.toString()+"\r\n";
 			}
 		}
 //
@@ -97,7 +97,7 @@ public class RequestMessage implements Serializable{
 			this.offset = offset;
 		}
 		public long getFetch_size() {
-			return fetch_size;
+			return fetch_size;//2 bit is the length '\r\n'
 		}
 		public void setFetch_size(long fetch_size) {
 			this.fetch_size = fetch_size;

@@ -123,8 +123,11 @@ public class FilePage implements FileHandler, Closeable {
 	@Override
 	public void read(final WritableByteChannel target,long position,long end) throws IOException {
 		// TODO Auto-generated method stub
-		logger.info("transferto position:"+channel.position()+",start:"+position+",end:"+end+",filelocate:"+filelocate+",target:");
-		this.channel.transferTo(position, end, target);
+        long count=end-position;
+//        while(count>0) {
+            logger.info("transferto position:" + channel.position() + ",start:" + position + ",end:" + end + ",filelocate:" + filelocate + ",target:");
+            this.channel.transferTo(position, end, target);
+//        }
 	}
 
 	@Override

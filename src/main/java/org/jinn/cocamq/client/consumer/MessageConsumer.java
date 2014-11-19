@@ -16,6 +16,8 @@ import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelHandler;
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
+import org.jboss.netty.handler.codec.frame.DelimiterBasedFrameDecoder;
+import org.jboss.netty.handler.codec.frame.Delimiters;
 import org.jboss.netty.handler.execution.ExecutionHandler;
 import org.jboss.netty.handler.execution.OrderedMemoryAwareThreadPoolExecutor;
 import org.jinn.cocamq.client.producer.MessageProductor;
@@ -40,7 +42,7 @@ public class MessageConsumer {
 	
 	ClientConfig cc=new ClientConfig();
 
-    int fetch_length=8*1024;
+    int fetch_length=32*1024;
 	
 	DirectBuffer db;
 	
@@ -72,7 +74,6 @@ public class MessageConsumer {
 				final MessageEvent e) throws Exception {
 //            cz.updateFetchOffset(topic, 0);
 			ChannelBuffer temp=(ChannelBuffer)e.getMessage();
-            System.out.println("temp:"+new String(temp.array()));
             System.out.println("message received size:"+temp.toByteBuffer().limit());
             List<Message> listMsg=new ArrayList<Message>();
             messagePack.unpackMessages(temp.array(), cc.getOffset(), cc, listMsg);
@@ -113,7 +114,7 @@ public class MessageConsumer {
             bootstrap.setOption("child.sendBufferSize", 1024 * 64);//max buffersize
             ChannelPipeline pipeline = bootstrap.getPipeline();
 
-            pipeline.addLast("framer", new FixedLengthFrameDecoder(this.fetch_length));
+            pipeline.addLast("framer", new FixedLengthFrameDecoder(this.fetch_length,true));
             pipeline.addLast("handler", new ClientHandler());
             ChannelFuture future = bootstrap.connect(new InetSocketAddress(
                     cc.getHost(), cc.getPort()));

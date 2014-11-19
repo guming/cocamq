@@ -15,7 +15,7 @@ public class MessageConsumerTest {
 
 	private final static Logger logger = Logger
 			.getLogger(MessageConsumerTest.class);
-    int fetch=8*1024;
+    int fetch=32*1024;
 	@Test
 	public void testConnet2Broker() {
 
