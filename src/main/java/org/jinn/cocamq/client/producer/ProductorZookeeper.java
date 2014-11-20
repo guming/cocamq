@@ -17,7 +17,6 @@ import org.jinn.zktools.ZkUtil;
 public class ProductorZookeeper {
 	static final Log log = LogFactory.getLog(ProductorZookeeper.class);
 	public final String metaRoot;
-//    public final String productorPath;
     public final String productorSubjectPath;
     public final String brokersPath;
 	private ZkConfig zkconfig;
@@ -33,7 +32,6 @@ public class ProductorZookeeper {
 		}
 		this.metaRoot = this.normalize(root);
 		this.brokersPath=this.metaRoot + "/brokers/topics";
-//        this.productorPath = this.metaRoot + "/productors";
         this.productorSubjectPath = this.metaRoot + "/productors/topics";
 	}
 	public void start(final String topic){
@@ -115,7 +113,6 @@ public class ProductorZookeeper {
 	}
 	
 	public String getZKString(String host,String port) {
-		
 	        if (host.contains(":")) {
 	            if (host.startsWith("[")) {
 	                return "cocamq://" + host + ":" + port;

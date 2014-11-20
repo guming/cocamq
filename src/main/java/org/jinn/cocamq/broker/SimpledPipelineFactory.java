@@ -30,7 +30,7 @@ public class SimpledPipelineFactory implements ChannelPipelineFactory {
         AutoFlusher bufferedWriter=new AutoFlusher();
 //        pipeline.addFirst("buffer", bufferedWriter);
 //		pipeline.addLast("execution",
-//				new ExecutionHandler(Executors.newCachedThreadPool()));//接收消息有问题,buffer不完整--单机测试环境
+//				new ExecutionHandler(Executors.newCachedThreadPool()));//recv error,buffer lost,single server
 		pipeline.addLast("frameDecoder", new DelimiterBasedFrameDecoder(
 				1024 * 64, Delimiters.lineDelimiter()));
 		pipeline.addLast("executor", new ExecutionHandler(

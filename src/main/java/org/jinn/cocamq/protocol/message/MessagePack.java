@@ -77,7 +77,7 @@ public abstract class MessagePack {
              }
 		    }
 		    cc.setOffset(myoffset+offset);
-		    System.out.println("---------------"+count);
+		    System.out.println("pack count:"+count);
          return flag;
 	  }
 

@@ -1,7 +1,7 @@
 package org.jinn.cocamq.test.fs;
 
 import org.jinn.cocamq.protocol.message.Message;
-import org.jinn.cocamq.protocol.message.MessageSend;
+import org.jinn.cocamq.protocol.message.MessageSent;
 import org.jinn.cocamq.util.CheckCRC32;
 import org.jinn.cocamq.util.MemTable;
 import org.junit.Test;
@@ -43,7 +43,7 @@ public class TestMemtable {
 //                "\"cart_record_id\":\"8765\",\"size_id\":\"2756943\"}}";
         byte[] temp2Bytes=temp2.getBytes();
         int checknum= CheckCRC32.crc32(temp2Bytes);
-        Message msg = new MessageSend(checknum,temp2,"comment");
+        Message msg = new MessageSent(checknum,temp2,"comment");
         return msg;
     }
 }

@@ -1,11 +1,11 @@
 package org.jinn.cocamq.test.netty;
 
 import org.apache.log4j.Logger;
-import org.jinn.cocamq.client.producer.MessageProductor;
+import org.jinn.cocamq.client.producer.MessageProducer;
+import org.jinn.cocamq.protocol.message.MessageSent;
 import org.jinn.cocamq.util.CheckCRC32;
 import org.jinn.cocamq.util.CommonExcutor;
 import org.jinn.cocamq.protocol.message.Message;
-import org.jinn.cocamq.protocol.message.MessageSend;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 
@@ -16,13 +16,13 @@ public class MessageProducerTest {
 	
 	@Test
 	public void testConnet2Broker(){
-		MessageProductor mp = new MessageProductor();
+		MessageProducer mp = new MessageProducer();
 		mp.start();
-		MessageProductor mp1 = new MessageProductor();
+		MessageProducer mp1 = new MessageProducer();
 		mp1.start();
-		MessageProductor mp2 = new MessageProductor();
+		MessageProducer mp2 = new MessageProducer();
 		mp2.start();
-		MessageProductor mp3 = new MessageProductor();
+		MessageProducer mp3 = new MessageProducer();
 		mp3.start();
 		 try {
 				Thread.sleep(1000*10);
@@ -32,7 +32,7 @@ public class MessageProducerTest {
 	}
 	@Test
 	public void testSendMessage(){
-		MessageProductor mp = new MessageProductor();
+		MessageProducer mp = new MessageProducer();
 		mp.start();
 		Stopwatch stopwatch = new Stopwatch();
 		stopwatch.start();
@@ -58,7 +58,7 @@ public class MessageProducerTest {
 		new Runnable(){
 			public void run(){
 				logger.info("testSendMessage threads:");
-				final MessageProductor mp = new MessageProductor();
+				final MessageProducer mp = new MessageProducer();
 				mp.start();
 				Stopwatch stopwatch = new Stopwatch();
 				stopwatch.start();
@@ -103,7 +103,7 @@ public class MessageProducerTest {
 //                "\"cart_record_id\":\"8765\",\"size_id\":\"2756943\"}}";
         byte[] temp2Bytes=temp2.getBytes();
         int checknum=CheckCRC32.crc32(temp2Bytes);
-		Message msg = new MessageSend(checknum,temp2,"comment");
+		Message msg = new MessageSent(checknum,temp2,"comment");
 		return msg;
 	}
 	 public static void main(String[] args) {

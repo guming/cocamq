@@ -1,8 +1,8 @@
 package org.jinn.cocamq.test.fs;
 
+import org.jinn.cocamq.protocol.message.MessageSent;
 import org.jinn.cocamq.util.CheckCRC32;
 import org.jinn.cocamq.util.CommonExcutor;
-import org.jinn.cocamq.protocol.message.MessageSend;
 import org.jinn.cocamq.protocol.message.Message;
 import org.jinn.cocamq.storage.FileStorage;
 import org.junit.Test;
@@ -26,7 +26,7 @@ public class MsgFileStorageTest {
                           "\"cart_record_id\":\"8765\",\"size_id\":\"2756943\"}}";
                   byte[] temp=temp2.getBytes();
                   int checkSum = CheckCRC32.crc32(temp);
-                      Message msg = new MessageSend(checkSum,temp2,"comment");
+                      Message msg = new MessageSent(checkSum,temp2,"comment");
                       mfs.appendMessage(msg);
                     temp=null;//help gc
 		       }

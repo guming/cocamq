@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by gumingcn on 14-9-3.
  */
-public class MessageSend implements Message,Serializable{
+public class MessageSent implements Message,Serializable{
 
     private int  id;
     private String body;
@@ -19,7 +19,7 @@ public class MessageSend implements Message,Serializable{
         this.id = id;
     }
 
-    public MessageSend(byte[] bytes) {
+    public MessageSent(byte[] bytes) {
         String content = new String(bytes);
         int pos = content.indexOf("#");
         if (pos == -1)
@@ -33,7 +33,7 @@ public class MessageSend implements Message,Serializable{
         body = body_str.substring(pos+1);
     }
 
-    public MessageSend(int id, String body, String topic) {
+    public MessageSent(int id, String body, String topic) {
         this.id = id;
         this.body = body;
         this.topic = topic;

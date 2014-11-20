@@ -16,11 +16,7 @@ import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelHandler;
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
-import org.jboss.netty.handler.codec.frame.DelimiterBasedFrameDecoder;
-import org.jboss.netty.handler.codec.frame.Delimiters;
-import org.jboss.netty.handler.execution.ExecutionHandler;
-import org.jboss.netty.handler.execution.OrderedMemoryAwareThreadPoolExecutor;
-import org.jinn.cocamq.client.producer.MessageProductor;
+import org.jinn.cocamq.client.producer.MessageProducer;
 import org.jinn.cocamq.client.ClientConfig;
 import org.jinn.cocamq.protocol.message.Message;
 import org.jinn.cocamq.protocol.message.MessagePack;
@@ -34,7 +30,7 @@ import sun.nio.ch.DirectBuffer;
 public class MessageConsumer {
 	
 	private final static Logger logger = LoggerFactory
-			.getLogger(MessageProductor.class);
+			.getLogger(MessageProducer.class);
 	
 	String topic;
 	

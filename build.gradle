@@ -2,6 +2,7 @@ apply plugin: 'java'
 apply plugin: 'idea'
 
 sourceCompatibility = 1.6
+
 version = '1.0'
 
 repositories {
@@ -38,10 +39,26 @@ sourceSets {
     }
 }
 
+
 task(runMsgServer, dependsOn: 'classes', type: JavaExec) {
-    main = 'org.jinn.cocamq.broker.StartServer'
+    main = 'org.jinn.cocamq.broker.BrokerBootstrap'
     classpath = sourceSets.main.runtimeClasspath
 }
 
-defaultTasks 'runMsgServer'
+task copyJar(dependsOn: 'assemble',type: Copy) {
+    into 'build/libs'
+}
+
+task dist(dependsOn: 'assemble',type: Zip) {
+    from jar.outputs.files
+    from(configurations.runtime) {
+        into('libs')
+    }
+    from 'build/resources/main'
+    from('scripts'){
+        into('bin')
+    }
+}
+
+defaultTasks 'dist'
 

@@ -144,7 +144,7 @@ public class FileSegmentManager extends Thread implements Closeable{
 			public boolean isFileType(File dir, String fileName) {
 				boolean flag = false;
 				if (!new File(dir, fileName).isDirectory()
-						&& fileName.toLowerCase().endsWith(fileType)) { // �����Ĳ����ļ��в����ļ�����".mqd"��β���򷵻�
+						&& fileName.toLowerCase().endsWith(fileType)) {
 																		// true
 					flag = true;
 				}
@@ -251,16 +251,6 @@ public class FileSegmentManager extends Thread implements Closeable{
 		getTopicSegmentLast().filePage.flush();
 	}
 	
-	 /**
-     * ���offset��maxSize��������MessageSet, ��offset�������offset��ʱ�򷵻�null��
-     * ��offsetС����Сoffset��ʱ���׳�ArrayIndexOutOfBounds�쳣
-     * 
-     * @param offset
-     * 
-     * @param maxSize
-     * @return
-     * @throws java.io.IOException
-     */
     public FileSegment slice(final long offset, final int maxSize) throws IOException {
         final FileSegment segment = this.findSegment(offset);
         if (segment == null) {
@@ -276,17 +266,17 @@ public class FileSegmentManager extends Thread implements Closeable{
         if (segments == null || segments.length < 1) {
             return null;
         }
-        // �ϵ���ݲ����ڣ�����������ϵ����
+        //
         final FileSegment last = segments[segments.length - 1];
-        // ��ͷ����ǰ���׳��쳣
+        //
         if (offset < segments[0].start) {
             throw new ArrayIndexOutOfBoundsException();
         }
-        // �պ���β�����߳�����Χ������null
+        //
         if (offset >= last.start + last.size()) {
             return null;
         }
-        // ���offset���ֲ���
+        //
         int low = 0;
         int high = segments.length - 1;
         while (low <= high) {

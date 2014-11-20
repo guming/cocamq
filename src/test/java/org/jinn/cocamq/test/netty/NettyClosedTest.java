@@ -2,7 +2,7 @@ package org.jinn.cocamq.test.netty;
 
 import com.google.common.base.Stopwatch;
 import org.apache.log4j.Logger;
-import org.jinn.cocamq.client.producer.MessageProductor;
+import org.jinn.cocamq.client.producer.MessageProducer;
 import org.junit.Test;
 
 /**
@@ -13,7 +13,7 @@ public class NettyClosedTest {
     private final static Logger logger = Logger.getLogger(NettyClosedTest.class);
     @Test
     public void testClientTimeOut(){
-        MessageProductor mp = new MessageProductor();
+        MessageProducer mp = new MessageProducer();
         mp.start();
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.start();

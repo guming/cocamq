@@ -1,6 +1,6 @@
 package org.jinn.cocamq.test.fs;
 
-import org.jinn.cocamq.protocol.message.MessageSend;
+import org.jinn.cocamq.protocol.message.MessageSent;
 
 import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
@@ -37,7 +37,7 @@ public class UseMappedFile {
 //                         "\"num\":2,\"warehouse\":\"VIP_NH\",\"merchandise_id\":\"1001950\",\"channel\":\"te\"," +
 //                         "\"cart_record_id\":\"8765\",\"size_id\":\"2756943\"}}";
 
-                 MessageSend msg = new MessageSend(i,temp2,"comment");
+                 MessageSent msg = new MessageSent(i,temp2,"comment");
 
 //                 ByteBuffer sd=MessagePack.packMessageBuffer(i, msg);
 

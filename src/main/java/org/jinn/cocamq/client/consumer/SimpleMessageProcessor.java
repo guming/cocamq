@@ -2,14 +2,14 @@ package org.jinn.cocamq.client.consumer;
 
 import java.util.List;
 
-import org.jinn.cocamq.client.producer.MessageProductor;
+import org.jinn.cocamq.client.producer.MessageProducer;
 import org.jinn.cocamq.protocol.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SimpleMessageProcessor implements MessageProcessor{
     private final static Logger logger = LoggerFactory
-            .getLogger(MessageProductor.class);
+            .getLogger(MessageProducer.class);
 	private static final SimpleMessageProcessor instance=new SimpleMessageProcessor();
 	public SimpleMessageProcessor(){
 		

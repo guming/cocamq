@@ -4,7 +4,7 @@ public class ClientConfig {
 	String nodeId="";
 	String nodeValue="";
 	String host;
-	int port=15001;
+	int port=15001;//default
 	int offset=0;
 	public String getNodeId() {
 		return nodeId;

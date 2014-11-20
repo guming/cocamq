@@ -22,9 +22,9 @@ import org.jinn.cocamq.protocol.command.PutCommand;
 import org.jinn.cocamq.client.ClientConfig;
 import org.jinn.cocamq.protocol.message.Message;
 
-public class MessageProductor {
+public class MessageProducer {
 	
-	private final static Logger logger = Logger.getLogger(MessageProductor.class);
+	private final static Logger logger = Logger.getLogger(MessageProducer.class);
 	
 	final ChannelFactory factory = new NioClientSocketChannelFactory(
 			Executors.newCachedThreadPool(),
