@@ -39,5 +39,7 @@ public class ClientConfig {
 		this.offset = offset;
 	}
 	
-	
+	public boolean isNull(){
+        return offset==0;
+    }
 }
