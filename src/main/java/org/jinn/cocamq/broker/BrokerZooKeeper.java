@@ -2,6 +2,9 @@ package org.jinn.cocamq.broker;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import org.I0Itec.zkclient.IZkStateListener;
@@ -26,7 +29,7 @@ public class BrokerZooKeeper implements PropertyChangeListener{
 	private ZkHandler zkh;
 	private RegisterConfig rConfig;
 	private final Set<String> topics = new ConcurrentHashSet<String>();
-
+    final List<String> brokers = Collections.synchronizedList(new ArrayList<String>());
 	public BrokerZooKeeper(final String root) {
 		// TODO Auto-generated constructor stub
 		zkconfig=ZkUtil.loadZkConfig();
@@ -41,9 +44,47 @@ public class BrokerZooKeeper implements PropertyChangeListener{
         this.rConfig.setMaster(isMaster);
         this.rConfig.setTopics(topics);
 	}
-	
+    public void doFetchBrokers(String topic) throws Exception {
+        String path=this.metaRoot + "/brokers/topics"+"/"+topic;
+        List<String> masterList=zkh.getChildrenMaybeNull(path+"/slave");
+
+        if(masterList!=null&&masterList.size()>0){
+            log.info("slave path:"+path+"/slave");
+            log.info("slaveList size:"+masterList.size());
+            if(!masterList.equals(brokers)){
+                brokers.clear();
+                brokers.addAll(masterList);
+            }
+        }else{
+            masterList=zkh.getChildrenMaybeNull(path+"/master");
+            log.info("master path:"+path+"/master");
+            log.info("masterlist size:"+masterList.size());
+            if(!masterList.equals(brokers)){
+                brokers.clear();
+                brokers.addAll(masterList);
+            }
+        }
+    }
 	public void start(){
-		 zkh.getZkClient().subscribeStateChanges(new SessionExpireListener());
+
+		zkh.getZkClient().subscribeStateChanges(new SessionExpireListener());
+        //monitor
+        new Runnable(){
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        doFetchBrokers("comment");
+                        if (brokers.size()==0){
+                            redoRegisterInZk();
+                        }
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.run();
 	}
 	
 	public void registerBrokerInZk(String brokerId,boolean isMaster) throws Exception {
@@ -75,9 +116,9 @@ public class BrokerZooKeeper implements PropertyChangeListener{
 	public void redoRegisterInZk() throws Exception {
         log.info("reAllRegisterInZk,nodeid: " + this.rConfig.getBrokerId());
         boolean isMaster=Boolean.valueOf(PropertiesUtil.getValue("broker.master"));
-        registerBrokerInZk("/"+this.rConfig.getBrokerId(),isMaster);
+        registerBrokerInZk(""+this.rConfig.getBrokerId(),isMaster);
         for (final String topic : BrokerZooKeeper.this.topics) {
-        	this.registerBrokerTopicInZk("/"+this.rConfig.getBrokerId(),topic,isMaster);
+        	this.registerBrokerTopicInZk(""+this.rConfig.getBrokerId(),topic,isMaster);
         }
         log.info("done reAllRegisterInZk");
     }
@@ -98,14 +139,14 @@ public class BrokerZooKeeper implements PropertyChangeListener{
 
         @Override
         public void handleNewSession() throws Exception {
-        	redoRegisterInZk();
+            redoRegisterInZk();
         	log.info("handleNewSession and re-registering server");
         }
         @Override
         public void handleStateChanged(final KeeperState state) throws Exception {
             // do nothing, since zkclient will do reconnect for us.
             redoRegisterInZk();
-            log.info("handleNewSession and re-registering server");
+            log.info("zkh.getZkClient() and re-registering server");
         }
 	}
 	

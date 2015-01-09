@@ -1,19 +1,17 @@
 package org.jinn.cocamq.broker;
 
 import java.net.InetSocketAddress;
-import java.nio.ByteOrder;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.jboss.netty.bootstrap.ServerBootstrap;
-import org.jboss.netty.buffer.HeapChannelBufferFactory;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.group.DefaultChannelGroup;
 import org.jboss.netty.channel.socket.ServerSocketChannelFactory;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.jinn.cocamq.protocol.message.Message;
-import org.jinn.cocamq.storage.FileStorage;
+import org.jinn.cocamq.storage.DataFileStorage;
 import org.jinn.cocamq.storage.MessageStorage;
 import org.jinn.cocamq.util.PropertiesUtil;
 
@@ -78,10 +76,10 @@ public class MessageBroker {
 		boolean isMaster = Boolean.valueOf(PropertiesUtil
 				.getValue("broker.master"));
 		try {
-			bzk.start();
 			bzk.registerBrokerInZk(brokerId, isMaster);
-			bzk.registerBrokerTopicInZk(brokerId, "comment", isMaster);
-		} catch (Exception e1) {
+            bzk.registerBrokerTopicInZk(brokerId, "comment", isMaster);
+            bzk.start();
+        } catch (Exception e1) {
 			// TODO Auto-generated catch block
 			logger.error("broker " + brokerId + " register error", e1);
 		}
@@ -141,7 +139,7 @@ public class MessageBroker {
 		}
 	}
 	public static void main(String[] args) {
-		MessageStorage ms=new FileStorage("comment");
+		MessageStorage ms=new DataFileStorage("comment");
 		MessageBroker mb = new MessageBroker();
 		mb.msgStorage=ms;
 		mb.start();

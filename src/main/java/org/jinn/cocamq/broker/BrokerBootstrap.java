@@ -1,6 +1,6 @@
 package org.jinn.cocamq.broker;
 
-import org.jinn.cocamq.storage.FileStorage;
+import org.jinn.cocamq.storage.DataFileStorage;
 import org.jinn.cocamq.storage.MessageStorage;
 
 public class BrokerBootstrap {
@@ -9,7 +9,7 @@ public class BrokerBootstrap {
      * @param args
      */
 	public static void main(String[] args) {
-		MessageStorage ms=new FileStorage("comment");
+		MessageStorage ms=new DataFileStorage("comment");
 		MessageBroker mb = new MessageBroker(ms);
 		mb.start();
 	}
