@@ -40,25 +40,27 @@ public class MessageConsumerTest {
 		MessageConsumer mp = new MessageConsumer("comment", SimpleMessageProcessor.getInstance());
 		mp.start();
 		while(true){
-		try {
-			Stopwatch stopwatch = new Stopwatch();
-			stopwatch.start();
-//            mp.getCz().updateFetchOffset("comment",0);
-			int offset=mp.getCc().getOffset();
-            System.out.println("the offset is :" + offset);
-			mp.fetchMessage(offset, fetch);
-			stopwatch.stop();
-			logger.info("testFetchMessages finished:" + stopwatch);
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
-                // TODO: handle exception
-            }
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-		}
+//            try {
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.start();
+    //            mp.getCz().updateFetchOffset("comment",0);
+                System.out.println(mp==null);
+                System.out.println(mp.getCc()==null);
+                int offset=mp.getCc().getOffset();
+                System.out.println("the offset is :" + offset);
+                mp.fetchMessage(offset, fetch);
+                stopwatch.stop();
+                logger.info("testFetchMessages finished:" + stopwatch);
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+//            } catch (Exception e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            } finally {
+//            }
 		}
 //		mp.stop();
 	}

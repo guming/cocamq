@@ -1,16 +1,16 @@
 package org.jinn.cocamq.test.fs;
 
 import org.jinn.cocamq.protocol.message.MessageSent;
+import org.jinn.cocamq.storage.DataFileStorage;
 import org.jinn.cocamq.util.CheckCRC32;
 import org.jinn.cocamq.util.CommonExcutor;
 import org.jinn.cocamq.protocol.message.Message;
-import org.jinn.cocamq.storage.FileStorage;
 import org.junit.Test;
 
 public class MsgFileStorageTest {
 	@Test
 	public void testAppendMessage() {
-		FileStorage mfs=new FileStorage("comment");
+		DataFileStorage mfs=new DataFileStorage("comment");
         long start =System.currentTimeMillis();
 		  try {
               for (int i = 0; i < 40000; i++) {
@@ -39,7 +39,7 @@ public class MsgFileStorageTest {
 	}
 	@Test
 	public void testAppendMessageThreads() {
-		final FileStorage mfs=new FileStorage("comment");
+		final DataFileStorage mfs=new DataFileStorage("comment");
         long start =System.currentTimeMillis();
 		  try {
               for (int i = 0; i < 40000; i++) {

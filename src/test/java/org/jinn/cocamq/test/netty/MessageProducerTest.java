@@ -37,7 +37,7 @@ public class MessageProducerTest {
 		Stopwatch stopwatch = new Stopwatch();
 		stopwatch.start();
 		 try {
-             for (int i = 0; i < 40000; i++) {
+             for (int i = 0; i < 400; i++) {
                      mp.sendMessage(getMessage(i));
 		       }
 		      } catch (Exception e) {
@@ -53,29 +53,29 @@ public class MessageProducerTest {
 	
 	@Test
 	public void testSendMessageThreads(){
-		 for (int j = 0; j < 4; j++) {
-		CommonExcutor.getExec().execute(
-		new Runnable(){
-			public void run(){
-				logger.info("testSendMessage threads:");
+		 for (int j = 0; j < 100; j++) {
+//		CommonExcutor.getExec().execute(
+//		new Runnable(){
+//			public void run(){
+//				logger.info("testSendMessage threads:");
 				final MessageProducer mp = new MessageProducer();
 				mp.start();
 				Stopwatch stopwatch = new Stopwatch();
 				stopwatch.start();
-				 try {
-		             for (int i = 0; i < 10000; i++) {
-		                     mp.sendMessage(getMessage(i));
-				       }
-				      } catch (Exception e) {
-				              // TODO Auto-generated catch block
-				              e.printStackTrace();
-				      }finally{
-				      }
-					stopwatch.stop();
-					logger.info("testSendMessage finished:"+stopwatch);
-				mp.stop();
-			}
-		});
+//				 try {
+////		             for (int i = 0; i < 10000; i++) {
+//		                     mp.sendMessage(getMessage(1));
+////				       }
+//				      } catch (Exception e) {
+//				              // TODO Auto-generated catch block
+//				              e.printStackTrace();
+//				      }finally{
+//				      }
+//					stopwatch.stop();
+//					logger.info("testSendMessage finished:"+stopwatch);
+//				mp.stop();
+//			}
+//		});
 		 }
 		 try {
 				Thread.sleep(1000*60);
