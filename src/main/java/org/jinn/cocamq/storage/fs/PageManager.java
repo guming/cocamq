@@ -17,8 +17,8 @@ import org.jinn.cocamq.protocol.message.Message;
  * @author guming
  *
  */
-public class PageStorage {
-	private static final Logger logger = Logger.getLogger(PageStorage.class);
+public class PageManager {
+	private static final Logger logger = Logger.getLogger(PageManager.class);
 	private static final String BASE_DIR="D:/gumingcn/mqfile/";
 	PageSegmentSet fsm;
     MessagePack messagePack=new MessagePack() {
@@ -27,7 +27,7 @@ public class PageStorage {
 
         }
     };
-	public PageStorage(String topic) {
+	public PageManager(String topic) {
 		this.fsm = new PageSegmentSet(topic,0);;
 	}
 	

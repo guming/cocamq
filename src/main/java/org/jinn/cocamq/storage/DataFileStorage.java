@@ -5,28 +5,29 @@ import java.nio.channels.WritableByteChannel;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.jinn.cocamq.storage.fs.PageManager;
 import org.jinn.cocamq.util.MemTableCompaction;
 import org.jinn.cocamq.protocol.message.Message;
-import org.jinn.cocamq.storage.fs.PageStorage;
+
 /**
  * MsgFileStorage interface for call
  * @author guming
  *
  */
-public class FileStorage implements MessageStorage{
+public class DataFileStorage implements MessageStorage{
 	
-	private final ConcurrentHashMap<String,PageStorage> fsMap=new ConcurrentHashMap<String,PageStorage>();
+	private final ConcurrentHashMap<String,PageManager> fsMap=new ConcurrentHashMap<String,PageManager>();
 	
-	public FileStorage(String topics) {
+	public DataFileStorage(String topics) {
 		super();
 		String[] topic_arr=topics.split(",");
 		for (int i = 0; i < topic_arr.length; i++) {
 			String topic=topic_arr[i];
-			PageStorage ps=new PageStorage(topic);
+			PageManager ps=new PageManager(topic);
 			fsMap.put(topic, ps);
 		}
 	}
-	public PageStorage getFSWithTopic(String topic){
+	public PageManager getFSWithTopic(String topic){
 		return fsMap.get(topic);
 	}
 	@Override
