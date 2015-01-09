@@ -32,7 +32,6 @@ public class SimpleLeaderSelector extends BaseLeaderSelector implements LeaderSe
 	}
 	/**
 	 * take simple leadership
-	 * @param path
 	 * @return
 	 */
 	@Override
