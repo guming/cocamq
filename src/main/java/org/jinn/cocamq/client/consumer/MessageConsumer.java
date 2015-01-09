@@ -94,10 +94,13 @@ public class MessageConsumer {
 	public void start() {
 		cz=new ConsumerZookeeper("/root");
 		cz.start(topic);
-		String master="";
+		String master;
 		try {
 			cc=cz.getMasterBroker(topic);
-			master=cc.getNodeValue();
+            if (cc == null||cc.isNull()) {
+                cc=cz.getMasterBroker(topic);
+            }
+            master=cc.getNodeValue();
 			cc.setOffset(cz.readFetchOffset(topic));
 			logger.info("connected to master:"+master);
             bootstrap.setOption("tcpNoDelay", true);

@@ -109,7 +109,6 @@ public class ProductorZookeeper {
 			log.info("productor handleChildChange:"+topic);
 			doFetchBrokers(topic);
 		}
-		
 	}
 	
 	public String getZKString(String host,String port) {
