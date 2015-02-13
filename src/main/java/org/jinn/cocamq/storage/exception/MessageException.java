@@ -1,6 +1,6 @@
 package org.jinn.cocamq.storage.exception;
 
-public class MessageException extends Exception{
+public class MessageException extends RuntimeException{
 
 	/**
 	 * 
