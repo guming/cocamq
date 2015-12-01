@@ -23,6 +23,7 @@ cocamq
      centos 6 Linux 2.6.32 16G 8核
      
 写入速度
+
      tcp_wmem min4096 default 16384
      tcp_rmem min4096 default 87380
      消息1k   10w循环写   tps 5w/s
@@ -30,7 +31,8 @@ cocamq
      jvm配置8G
      
 2.读取速度
-	 tcp_wmem min4096 default 16384
+
+    tcp_wmem min4096 default 16384
     tcp_rmem min4096 default 87380
     初步完成
     运行junit MessageConsumerTest.java
