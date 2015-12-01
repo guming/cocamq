@@ -19,7 +19,6 @@ import org.jinn.cocamq.protocol.message.Message;
  */
 public class PageManager {
 	private static final Logger logger = Logger.getLogger(PageManager.class);
-	private static final String BASE_DIR="D:/gumingcn/mqfile/";
 	PageSegmentSet fsm;
     MessagePack messagePack=new MessagePack() {
         @Override

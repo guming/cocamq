@@ -28,7 +28,7 @@ public class PageSegmentSet extends Thread implements Closeable{
 	
 	private FileSegmentList topicSegments = new FileSegmentList();
 	
-	private static final String BASE_DIR = "/Users/gumingcn/mqfile/";
+	private static final String BASE_DIR = "/data/mqfile/";
 	
 	private static final String FILE_PREFIX="000000000000";
 	
