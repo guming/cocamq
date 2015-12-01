@@ -63,9 +63,12 @@ public class MessageProducer {
 		public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e)
 				throws Exception {
 			// TODO Auto-generated method stub
-			super.exceptionCaught(ctx, e);
-			e.getCause().printStackTrace();
-			e.getChannel().close();
+			try {
+				super.exceptionCaught(ctx, e);
+				e.getChannel().close();
+			}catch (Exception ex){
+				logger.error(ex);
+			}
 		}
 		
 	}
@@ -109,7 +112,7 @@ public class MessageProducer {
 	}
 
 	public void stop() {
-		channel.getCloseFuture().awaitUninterruptibly(3*1000);
+		channel.getCloseFuture().awaitUninterruptibly(5 * 1000);
 		bootstrap.releaseExternalResources();
 		logger.info("stop the client successed");
 	}
