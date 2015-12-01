@@ -1,9 +1,10 @@
 #!/bin/sh
 dir=`dirname $0`
 pidfile=pid
-cd  $dir
-CP=.:build/WEB-INF/classes/
-for file in web/WEB-INF/lib/*;
+cd  $PWD
+echo $PWD
+CP=.
+for file in libs/*;
 do CP=${CP}:$file;
 done
 retval=0
