@@ -27,6 +27,7 @@ public class SimpleWritableByteChannel implements WritableByteChannel {
 	public int write(ByteBuffer src) throws IOException {
 		// TODO Auto-generated method stub
         ChannelBuffer cb=df.getBuffer(src);
+		System.out.println("got in times");
 //        ChannelBuffer cb1=cb.copy();
 //        byte[] temp=new byte[src.limit()];
 //        cb1.getBytes(0,temp);
