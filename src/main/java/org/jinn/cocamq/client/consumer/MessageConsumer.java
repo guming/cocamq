@@ -38,7 +38,7 @@ public class MessageConsumer {
 	
 	ClientConfig cc=new ClientConfig();
 
-    int fetch_length=32*1024;
+    int fetch_length=128*1024;
 	
 	DirectBuffer db;
 	
@@ -161,7 +161,7 @@ public class MessageConsumer {
 	public static void main(String[] args) {
 		MessageConsumer mp = new MessageConsumer("comment");
 		mp.start();
-		mp.fetchMessage(mp.getCc().getOffset(),1024*8);
+		mp.fetchMessage(mp.getCc().getOffset(),1024*128);
 		mp.stop();
 	}
     public ConsumerZookeeper getCz() {
