@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
 
+import org.apache.log4j.Logger;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.DirectChannelBufferFactory;
 import org.jboss.netty.channel.Channel;
 
 public class SimpleWritableByteChannel implements WritableByteChannel {
+	private final static Logger logger = Logger.getLogger(SimpleWritableByteChannel.class);
 	Channel channel;
 	DirectChannelBufferFactory df=new DirectChannelBufferFactory();
 	@Override
@@ -27,7 +29,7 @@ public class SimpleWritableByteChannel implements WritableByteChannel {
 	public int write(ByteBuffer src) throws IOException {
 		// TODO Auto-generated method stub
         ChannelBuffer cb=df.getBuffer(src);
-		System.out.println("got in times");
+		logger.info("got by times");
 //        ChannelBuffer cb1=cb.copy();
 //        byte[] temp=new byte[src.limit()];
 //        cb1.getBytes(0,temp);
