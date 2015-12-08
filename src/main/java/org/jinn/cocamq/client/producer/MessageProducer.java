@@ -88,7 +88,7 @@ public class MessageProducer {
 		}
 		ChannelPipeline pipeline = bootstrap.getPipeline();
 	    pipeline.addLast("framer", new DelimiterBasedFrameDecoder(
-	                1024*64, Delimiters.lineDelimiter()));
+	                1024*128, Delimiters.lineDelimiter()));
 		pipeline.addLast("handler", new ClientHandler());
 		bootstrap.setOption("child.tcpNoDelay", true);
 		bootstrap.setOption("child.keepAlive", true);

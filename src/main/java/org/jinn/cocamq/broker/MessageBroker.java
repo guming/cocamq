@@ -56,11 +56,11 @@ public class MessageBroker {
 		bootstrap.setOption("child.tcpNoDelay", true);
 		bootstrap.setOption("child.keepAlive", true);
         bootstrap.setOption("connectTimeoutMillis",3*1000);
-        bootstrap.setOption("receiveBufferSize", 1024 * 64);//max buffersize
-        bootstrap.setOption("sendBufferSize", 1024 * 64);//max buffersize
+        bootstrap.setOption("receiveBufferSize", 1024 * 128);//max buffersize
+        bootstrap.setOption("sendBufferSize", 1024 * 128);//max buffersize
         bootstrap.setOption("child.reuseAddress", true);
-        bootstrap.setOption("child.receiveBufferSize", 1024 * 64);//max buffersize
-        bootstrap.setOption("child.sendBufferSize", 1024 * 64);//max buffersize
+        bootstrap.setOption("child.receiveBufferSize", 1024 * 128);//max buffersize
+        bootstrap.setOption("child.sendBufferSize", 1024 * 128);//max buffersize
         bootstrap.setPipelineFactory(createPipelineFactory(allChannels,msgStorage));
 		// ChannelPipelineFactory pipelineFactory;
 		// if (binary){

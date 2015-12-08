@@ -107,10 +107,10 @@ public class MessageConsumer {
             bootstrap.setOption("keepAlive", true);
             bootstrap.setOption("child.tcpNoDelay", true);
             bootstrap.setOption("child.keepAlive", true);
-            bootstrap.setOption("receiveBufferSize", 1024 * 64);//max buffersize
-            bootstrap.setOption("sendBufferSize", 1024 * 64);//max buffersize
-            bootstrap.setOption("child.receiveBufferSize", 1024 * 64);//max buffersize
-            bootstrap.setOption("child.sendBufferSize", 1024 * 64);//max buffersize
+            bootstrap.setOption("receiveBufferSize", 1024 * 128);//max buffersize
+            bootstrap.setOption("sendBufferSize", 1024 * 128);//max buffersize
+            bootstrap.setOption("child.receiveBufferSize", 1024 * 128);//max buffersize
+            bootstrap.setOption("child.sendBufferSize", 1024 * 128);//max buffersize
             ChannelPipeline pipeline = bootstrap.getPipeline();
 
             pipeline.addLast("framer", new FixedLengthFrameDecoder(this.fetch_length,true));
